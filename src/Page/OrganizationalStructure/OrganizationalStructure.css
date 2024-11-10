@@ -1,0 +1,53 @@
+/* OrganizationalStructure.css */
+
+.organizational-structure-container {
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.org-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.org-item-header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.org-item-name {
+    font-size: 18px;
+    margin: 0;
+}
+
+.toggle-icon {
+    font-size: 18px;
+}
+
+.org-item-description {
+    margin-top: 10px;
+}
+
+.children {
+    margin-top: 10px;
+    padding-left: 20px;
+}

@@ -1,0 +1,81 @@
+/* Footer CSS */
+
+
+/* Apply global styles to body and html to ensure full height and correct layout */
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    /* Ensure the background matches the global styles */
+    font-family: 'Press Start 2P', cursive;
+    /* Match global font */
+    overflow-x: hidden;
+    /* Prevent horizontal scrolling */
+}
+
+
+/* Footer container to push the footer to the bottom */
+
+.footer-container {
+    margin-top: auto;
+    /* Push footer to the bottom */
+    width: 100%;
+}
+
+
+/* Footer styling */
+
+footer {
+    background-color: #333;
+    /* Dark background to match the navbar */
+    color: #fff;
+    /* White text for footer */
+    text-align: center;
+    /* Center-align the text */
+    padding: 20px 0;
+    /* Add padding for spacing */
+    width: 100%;
+    /* Ensure the footer takes the full width */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    /* Shadow for separation */
+    position: relative;
+    /* Keep the footer positioned at the bottom */
+    bottom: 0;
+    /* Ensure it's always at the bottom */
+    left: 0;
+    /* Ensure it's stretched across the entire width */
+}
+
+
+/* Footer Links */
+
+footer a {
+    color: #ffcc00;
+    /* Neon yellow links for contrast */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ff0066;
+    /* Hover effect for links */
+    text-decoration: underline;
+}
+
+
+/* Footer Text Styling */
+
+footer p {
+    font-size: 0.9rem;
+    /* Slightly smaller font for footer text */
+    margin: 0;
+    /* Remove margin */
+}
+
+
+/* Optional: You can add some additional spacing or customizations here */

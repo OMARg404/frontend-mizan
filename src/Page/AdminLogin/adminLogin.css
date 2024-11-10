@@ -1,0 +1,242 @@
+/* Body and background */
+
+
+/* ./adminLogin.css */
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(30, 136, 229, 0.7));
+    background-size: cover;
+    background-position: center;
+    height: auto;
+    /* Allow the height to expand if needed */
+    min-height: 100vh;
+    /* Ensure the body takes at least the full height of the viewport */
+    overflow-y: auto;
+    /* Allow vertical scrolling */
+    flex-direction: column;
+    /* Ensure that the content stacks vertically */
+}
+
+
+/* Login Container */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(30, 136, 229, 0.7));
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Login Box */
+
+.login-box {
+    background-color: rgba(30, 136, 229, 0.9);
+    border: 2px solid #1565c0;
+    padding: 30px;
+    margin: 20px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.login-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+
+/* Title Styling */
+
+.login-title {
+    font-size: 28px;
+    font-family: 'Press Start 2P', cursive;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px #000;
+}
+
+
+/* Form Labels */
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-family: 'Press Start 2P', cursive;
+    color: #ffffff;
+}
+
+
+/* Input Fields */
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #1565c0;
+    background-color: #1976d2;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'Press Start 2P', cursive;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+.login-form input:focus {
+    border-color: #0d47a1;
+    outline: none;
+}
+
+
+/* Submit Button */
+
+.login-button {
+    background-color: #1565c0;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-button:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+}
+
+
+/* Admin Login Button */
+
+.admin-login-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff5722;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    border-radius: 5px;
+}
+
+.admin-login-button:hover {
+    background-color: #e64a19;
+    transform: translateY(-2px);
+}
+
+
+/* Spinner Animation */
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #fff;
+    width: 60px;
+    height: 90px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Error Messages */
+
+.text-danger {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .login-container {
+        margin: 0;
+    }
+    .login-box {
+        padding: 20px;
+    }
+}
+
+
+/* Overlay Effect */
+
+.login-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    z-index: 1;
+}
+
+
+/* Mizan Branding Text */
+
+.login-box::after {
+    content: "MIZAN APP";
+    font-family: 'Press Start 2P', cursive;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 120px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+
+/* Back Button Styling */
+
+.back-button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #e64a19;
+    /* Match your color theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-button:hover {
+    background-color: #d43f00;
+    /* Darker shade on hover */
+    transform: translateY(-2px);
+}
