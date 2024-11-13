@@ -166,15 +166,22 @@ export const addExpense = async(expenseData, token) => {
     }
 };
 
+
+// In api.js or wherever your functions are defined
 export const getAllExpenses = async(token) => {
     try {
-        const response = await axios.get(`${baseUrl}/expenses`, authHeaders(token));
+        const response = await axios.get(`${baseUrl}/expenses`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token for authorization
+            },
+        });
         return response.data;
     } catch (error) {
-        console.error('Error fetching expenses:', error);
-        throw error.response ? error.response.data : new Error('Failed to fetch expenses');
+        console.error("Error fetching expenses:", error);
+        throw error; // Rethrow to handle it in the calling component
     }
 };
+
 
 export const deleteExpense = async(expenseId, token) => {
     try {

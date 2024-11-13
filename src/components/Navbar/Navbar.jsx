@@ -1,37 +1,25 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Navbar, Nav, Container, Row, Col, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faMoneyBill, faCreditCard, faTachometerAlt, faEnvelopeOpenText, faFileAlt, faClipboard, faUserShield, faUserCog, faBell } from '@fortawesome/free-solid-svg-icons'; // Added faBell for notification icon
-import './Navbar.css'; // Import custom CSS for styles
-import DigitalClock from './DigitalClock'; // Make sure to import the DigitalClock component
+import {
+  faHome, faMoneyBill, faCreditCard, faTachometerAlt, faEnvelopeOpenText,
+  faFileAlt, faClipboard, faUserShield, faUserCog, faBell
+} from '@fortawesome/free-solid-svg-icons';
+import './Navbar.css';
 
 const CustomNavbar = () => {
-  // State to handle notification tab visibility
   const [showNotifications, setShowNotifications] = useState(false);
-
-  // Toggle notification tab visibility
   const toggleNotifications = () => setShowNotifications(!showNotifications);
 
   return (
     <>
       <Navbar fixed="top" expand="lg" className="custom-navbar">
+      
         <Container fluid="lg">
-          <Row style={{ width: '100%' }}>
-            <Col xs={12} sm="auto">
-              <NavLink className="navbar-brand" to="">
+        <NavLink className="navbar-brand" to="">
                 <span>MIZAN</span>
               </NavLink>
-            </Col>
-            <Col xs={12} sm="auto" className="ms-auto d-flex justify-content-end align-items-center cc">
-              <DigitalClock />
-            </Col>
-          </Row>
-        </Container>
-      </Navbar>
-
-      <Navbar fixed="top" expand="lg" className="custom-navbar" style={{ top: '56px' }}>
-        <Container fluid="lg">
           <Navbar.Toggle aria-controls="navbarNav" />
           <Navbar.Collapse id="navbarNav">
             <Nav className="me-auto">
@@ -44,8 +32,6 @@ const CustomNavbar = () => {
               <NavLinkItem to="/requests" label="الطلبات" icon={faClipboard} />
               <NavLinkItem to="/userpermissions" label="أذونات المستخدم" icon={faUserShield} />
               <NavLinkItem to="/admin" label="الصفحة الإدارية" icon={faUserCog} />
-              
-              {/* Notification Icon */}
               <Nav.Item>
                 <span className="nav-link" onClick={toggleNotifications}>
                   <FontAwesomeIcon icon={faBell} className="me-2" />
@@ -57,7 +43,6 @@ const CustomNavbar = () => {
         </Container>
       </Navbar>
 
-      {/* Notification Tab Overlay */}
       {showNotifications && (
         <div className="notification-tab">
           <div className="notification-header">

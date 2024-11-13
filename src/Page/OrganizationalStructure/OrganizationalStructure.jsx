@@ -1,33 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./OrganizationalStructure.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { getAllAdministrativeUnits } from "../../services/api"; // Import the API functions
+import { AuthContext } from "../../context/AuthContext"; // Import the AuthContext
+import { Spinner } from 'react-bootstrap'; // Import Spinner from React-Bootstrap
 
 const OrganizationalStructure = () => {
+  const { token } = useContext(AuthContext); // Get the token from AuthContext
   const [searchTerm, setSearchTerm] = useState(""); // To handle search input
   const [structureData, setStructureData] = useState([]); // To store structure data
   const [expandedItems, setExpandedItems] = useState({}); // To manage expanded/collapsed items
+  const [loading, setLoading] = useState(true); // Loading state
 
   // Fetch the structure data when the component is mounted
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = JSON.parse(localStorage.getItem("jwtToken")); // Get token from localStorage
         if (!token) {
           alert("No token found, please log in.");
           return;
         }
         const data = await getAllAdministrativeUnits(token); // Fetch data from API
         setStructureData(data); // Set the data in state
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching data: ", error.response ? error.response.data : error.message);
         alert("Failed to fetch data: " + (error.response ? error.response.data.message : "Server error."));
+        setLoading(false); // Set loading to false if there's an error
       }
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   // Toggle expand/collapse for the units
   const toggleExpand = (index) => {
@@ -71,27 +76,33 @@ const OrganizationalStructure = () => {
   };
 
   return (
-    <>
-      <div className="organizational-structure-container">
-        <h2>الهيكل التنظيمي</h2>
-        
-        {/* Search bar */}
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="ابحث عن وحدة"
-            className="form-control"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        </div>
+    <div className="organizational-structure-container">
+      <h2>الهيكل التنظيمي</h2>
+      
+      {/* Search bar */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="ابحث عن وحدة"
+          className="form-control"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </div>
 
-        {/* Display the organizational structure */}
+      {/* Loading Spinner */}
+      {loading ? (
+        <div className="loading-container">
+          <Spinner animation="border" variant="primary" size="lg" />
+          <h4>جاري تحميل البيانات...</h4>
+        </div>
+      ) : (
+        // Display the organizational structure once loading is complete
         <div className="org-structure-list">
           {renderStructure(structureData)}
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

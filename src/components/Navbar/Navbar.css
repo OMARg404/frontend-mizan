@@ -1,0 +1,153 @@
+/* Global Styles */
+
+body {
+    font-family: 'Press Start 2P', cursive, 'GTAFont', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f0f0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: #1c1c1c;
+    font-size: 16px;
+    /* Add padding to account for the navbar heights */
+}
+
+html {
+    background: #ffffff;
+}
+
+
+/* Navbar Styling */
+
+.custom-navbar,
+.navbar {
+    background: linear-gradient(90deg, #005f73, #0a9396);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #007f91;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+.navbar-brand,
+.logo {
+    font-size: 1.8rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px #000;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.navbar-brand:hover,
+.navbar .logo:hover {
+    transform: scale(1.1);
+    color: #ffffff;
+}
+
+.nav-link,
+.navbar .menu a {
+    color: #ffffff !important;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px;
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px 2px #000;
+    text-decoration: none;
+}
+
+.nav-link:hover,
+.navbar .menu a:hover {
+    color: #ffcc00 !important;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+}
+
+.nav-link.active {
+    color: #ffcc00 !important;
+}
+
+.navbar-toggler {
+    border-color: #005f73;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+    padding-top: 10px;
+}
+
+@media (max-width: 767px) {
+    .navbar-nav {
+        text-align: center;
+        width: 100%;
+    }
+    .nav-item {
+        margin: auto;
+    }
+    .navbar-brand {
+        margin-right: auto;
+    }
+}
+
+
+/* Content Styles */
+
+.content {
+    padding-top: 80px;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    overflow-y: auto;
+}
+
+
+/* Notification Styles */
+
+.notification-tab {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 300px;
+    z-index: 20;
+    padding: 15px;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.notification-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #333;
+}

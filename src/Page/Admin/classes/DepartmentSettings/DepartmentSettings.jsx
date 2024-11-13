@@ -78,7 +78,6 @@ const DepartmentSettings = () => {
     };
 
     // Handle update action (updating allocated budget)
-   
     const handleUpdateBudget = async (unitId, spentAmount) => {
         try {
             console.log("spentAmount "+ spentAmount);
@@ -88,7 +87,6 @@ const DepartmentSettings = () => {
             console.error('Error updating budget:', error);
         }
     };
-    
 
     // Handle adding a new expense
     const handleAddExpense = async () => {
