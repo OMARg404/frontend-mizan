@@ -18,7 +18,6 @@ export const createAdmin = async(adminData) => {
     }
 };
 
-// Admin login
 export const loginAdmin = async(email, password) => {
     try {
         const response = await axios.post(`${baseUrl}/admin/login`, { email, password });
@@ -34,7 +33,6 @@ export const loginAdmin = async(email, password) => {
     }
 };
 
-// Get all admins (using token from AuthContext)
 export const getAllAdmins = async(token) => {
     try {
         const response = await axios.get(`${baseUrl}/admin/admins`, authHeaders(token));
@@ -54,7 +52,6 @@ export const createUser = async(userData, token) => {
     }
 };
 
-// Get all users (using token from AuthContext)
 export const getAllUsers = async(token) => {
     try {
         const response = await axios.get(`${baseUrl}/users`, authHeaders(token));
@@ -64,7 +61,6 @@ export const getAllUsers = async(token) => {
     }
 };
 
-// User login
 export const loginUser = async(email, password) => {
     try {
         const response = await axios.post(`${baseUrl}/users/login`, { email, password });
@@ -79,6 +75,8 @@ export const loginUser = async(email, password) => {
         throw error.response ? error.response.data : new Error('Login failed');
     }
 };
+
+// Administrative Units API Endpoints
 export const getAllAdministrativeUnits = async(token) => {
     try {
         const response = await axios.get(`${baseUrl}/administrative-units`, authHeaders(token));
@@ -89,7 +87,6 @@ export const getAllAdministrativeUnits = async(token) => {
     }
 };
 
-// Create a new administrative unit
 export const createAdministrativeUnit = async(unitData, token) => {
     try {
         const response = await axios.post(`${baseUrl}/administrative-units`, unitData, authHeaders(token));
@@ -100,7 +97,6 @@ export const createAdministrativeUnit = async(unitData, token) => {
     }
 };
 
-// Update an existing administrative unit
 export const updateAdministrativeUnit = async(unitId, updateData, token) => {
     try {
         const response = await axios.put(`${baseUrl}/administrative-units/${unitId}`, updateData, authHeaders(token));
@@ -111,7 +107,6 @@ export const updateAdministrativeUnit = async(unitId, updateData, token) => {
     }
 };
 
-// Delete an administrative unit
 export const deleteAdministrativeUnit = async(unitId, token) => {
     try {
         const response = await axios.delete(`${baseUrl}/administrative-units/${unitId}`, authHeaders(token));
@@ -122,7 +117,6 @@ export const deleteAdministrativeUnit = async(unitId, token) => {
     }
 };
 
-// Get an administrative unit by ID
 export const getAdministrativeUnitById = async(unitId, token) => {
     try {
         const response = await axios.get(`${baseUrl}/administrative-units/${unitId}`, authHeaders(token));
@@ -130,5 +124,74 @@ export const getAdministrativeUnitById = async(unitId, token) => {
     } catch (error) {
         console.error('Error fetching administrative unit:', error);
         throw error.response ? error.response.data : new Error('Failed to fetch administrative unit');
+    }
+};
+
+// Budgets API Endpoints
+export const updateBudgetAllocated = async(unitId, spentAmount, token) => {
+    try {
+        const response = await axios.post(
+            `${baseUrl}/budgets/update-allocated`, { unitId, spentAmount },
+            authHeaders(token)
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error updating budget allocated:', error);
+        throw error.response ? error.response.data : new Error('Failed to update budget allocated');
+    }
+};
+
+// New function to create/update the central budget
+export const createCentralBudget = async(totalAmount, token) => {
+    try {
+        const response = await axios.post(
+            `${baseUrl}/budgets/central`, { totalAmount },
+            authHeaders(token)
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error creating central budget:', error);
+        throw error.response ? error.response.data : new Error('Failed to create central budget');
+    }
+};
+
+// Expenses API Endpoints
+export const addExpense = async(expenseData, token) => {
+    try {
+        const response = await axios.post(`${baseUrl}/expenses/add`, expenseData, authHeaders(token));
+        return response.data;
+    } catch (error) {
+        console.error('Error adding expense:', error);
+        throw error.response ? error.response.data : new Error('Failed to add expense');
+    }
+};
+
+export const getAllExpenses = async(token) => {
+    try {
+        const response = await axios.get(`${baseUrl}/expenses`, authHeaders(token));
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching expenses:', error);
+        throw error.response ? error.response.data : new Error('Failed to fetch expenses');
+    }
+};
+
+export const deleteExpense = async(expenseId, token) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/expenses/${expenseId}`, authHeaders(token));
+        return response.data; // Assuming no response body is returned on success
+    } catch (error) {
+        console.error('Error deleting expense:', error);
+        throw error.response ? error.response.data : new Error('Failed to delete expense');
+    }
+};
+
+export const deleteBudget = async(budgetId, token) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/budgets/${budgetId}`, authHeaders(token));
+        return response.data; // Assuming no response body is returned on success
+    } catch (error) {
+        console.error('Error deleting budget:', error);
+        throw error.response ? error.response.data : new Error('Failed to delete budget');
     }
 };

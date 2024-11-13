@@ -1,0 +1,145 @@
+/* DepartmentSettings.css */
+
+
+/* الصفحة الأساسية */
+
+.department-settings {
+    margin-top: 30rem;
+    background-color: #f8f9fa;
+    padding: 30px;
+    color: #212529;
+}
+
+
+/* العنوان */
+
+.page-title {
+    color: #343a40;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+/* قسم تقديمي */
+
+.intro-section {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.intro-section p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.intro-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+
+/* الكروت */
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+
+/* نموذج إضافة وحدة جديدة */
+
+.create-unit-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.create-unit-form .form-group {
+    margin-bottom: 20px;
+}
+
+.create-unit-form .btn {
+    font-size: 1.1rem;
+    padding: 12px;
+}
+
+
+/* DepartmentSettings.css */
+
+.department-settings {
+    background-color: #f8f9fa;
+    padding: 20px;
+    padding-top: 15px;
+    /* تقليل المسافة العلوية */
+}
+
+.page-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.intro-section {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.create-unit-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Media Queries for smaller devices */
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 1.8rem;
+    }
+    .intro-section {
+        padding: 10px;
+    }
+    .create-unit-form {
+        padding: 15px;
+    }
+}

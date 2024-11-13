@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -90,8 +91,8 @@ const App = () => {
                                                                 Route path = "/admin/settings/organizational-structure"
                                                                 element = { < Layout > < OrganizationalStructureSettings / > < /Layout>} / >
                                                                     <
-                                                                    /Routes> <
-                                                                    /AuthProvider> <
+                                                                    /Routes> < /
+                                                                    AuthProvider > <
                                                                     /Router>
                                                                 );
                                                             };
