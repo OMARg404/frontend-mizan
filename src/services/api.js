@@ -1,204 +1,131 @@
 import axios from 'axios';
 
 // Define the base URL for the backend
-const baseUrl = 'http://localhost:8000/api/v1';
+const baseUrl = 'http://localhost:3000/api/v1';
 
 // Helper function to add authorization headers
-const authHeaders = (token) => ({
-    headers: { Authorization: `Bearer ${token}` },
-});
 
-// Admin API Endpoints
-export const createAdmin = async(adminData) => {
-    try {
-        const response = await axios.post(`${baseUrl}/admin/create`, adminData);
-        return response.data;
-    } catch (error) {
-        throw error.response ? error.response.data : new Error('Create admin failed');
-    }
-};
-
-export const loginAdmin = async(email, password) => {
-    try {
-        const response = await axios.post(`${baseUrl}/admin/login`, { email, password });
-        return {
-            token: response.data.token,
-            user: {
-                ...response.data.user,
-                isAdmin: true, // تحديد أن المستخدم هو أدمن
-            },
-        };
-    } catch (error) {
-        throw error.response ? error.response.data : new Error('Login failed');
-    }
-};
-
-export const getAllAdmins = async(token) => {
-    try {
-        const response = await axios.get(`${baseUrl}/admin/admins`, authHeaders(token));
-        return response.data;
-    } catch (error) {
-        throw error.response ? error.response.data : new Error('Failed to fetch admins');
-    }
-};
 
 // User API Endpoints
-export const createUser = async(userData, token) => {
+export const createUser = async(userData) => {
     try {
-        const response = await axios.post(`${baseUrl}/users`, userData, authHeaders(token));
+        const response = await axios.post(`${baseUrl}/admin/create`, userData, { headers: authHeaders() });
         return response.data;
     } catch (error) {
         throw error.response ? error.response.data : new Error('Create user failed');
     }
 };
 
-export const getAllUsers = async(token) => {
-    try {
-        const response = await axios.get(`${baseUrl}/users`, authHeaders(token));
-        return response.data;
-    } catch (error) {
-        throw error.response ? error.response.data : new Error('Failed to fetch users');
-    }
+// Updated loginUser function to handle the correct response format
+
+// Helper function to add authorization headers
+const authHeaders = () => {
+    const token = localStorage.getItem('jwtToken');
+    console.log('Token:', token); // Retrieve token from localStorage
+    return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+// Updated loginUser function to handle the correct response format
 export const loginUser = async(email, password) => {
     try {
-        const response = await axios.post(`${baseUrl}/users/login`, { email, password });
-        return {
-            token: response.data.token,
-            user: {
-                ...response.data.user,
-                isAdmin: false, // تحديد أن المستخدم ليس أدمن
-            },
-        };
+        const response = await axios.post(`${baseUrl}/admin/login`, { email, password });
+
+        // Debug: Log the response data to check what is returned from the backend
+        console.log("Login response:", response.data);
+
+        // Assuming the response contains msg, token, and user data
+        const { msg, token, user } = response.data;
+
+        if (msg === 'success' && token) {
+            // Return the token and user data
+            return { token, user };
+        } else {
+            throw new Error('Login failed: Token or user data missing');
+        }
     } catch (error) {
-        throw error.response ? error.response.data : new Error('Login failed');
+        console.error("Login failed:", error.response ? error.response.data : error.message);
+        throw new Error(error.response ? error.response.data.message : error.message);
     }
 };
 
-// Administrative Units API Endpoints
-export const getAllAdministrativeUnits = async(token) => {
+
+// Budget API Endpoints
+export const addBudget = async(budgetData) => {
     try {
-        const response = await axios.get(`${baseUrl}/administrative-units`, authHeaders(token));
+        const response = await axios.post(`${baseUrl}/budget`, budgetData, { headers: authHeaders() });
         return response.data;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error.response ? error.response.data : new Error('Failed to fetch administrative units');
+        throw error.response ? error.response.data : new Error('Add budget failed');
     }
 };
 
-export const createAdministrativeUnit = async(unitData, token) => {
+export const updateUserBudget = async(budgetId, expenses) => {
     try {
-        const response = await axios.post(`${baseUrl}/administrative-units`, unitData, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
-    } catch (error) {
-        console.error('Error creating administrative unit:', error);
-        throw error.response ? error.response.data : new Error('Failed to create administrative unit');
-    }
-};
-
-export const updateAdministrativeUnit = async(unitId, updateData, token) => {
-    try {
-        const response = await axios.put(`${baseUrl}/administrative-units/${unitId}`, updateData, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
-    } catch (error) {
-        console.error('Error updating administrative unit:', error);
-        throw error.response ? error.response.data : new Error('Failed to update administrative unit');
-    }
-};
-
-export const deleteAdministrativeUnit = async(unitId, token) => {
-    try {
-        const response = await axios.delete(`${baseUrl}/administrative-units/${unitId}`, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
-    } catch (error) {
-        console.error('Error deleting administrative unit:', error);
-        throw error.response ? error.response.data : new Error('Failed to delete administrative unit');
-    }
-};
-
-export const getAdministrativeUnitById = async(unitId, token) => {
-    try {
-        const response = await axios.get(`${baseUrl}/administrative-units/${unitId}`, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
-    } catch (error) {
-        console.error('Error fetching administrative unit:', error);
-        throw error.response ? error.response.data : new Error('Failed to fetch administrative unit');
-    }
-};
-
-// Budgets API Endpoints
-export const updateBudgetAllocated = async(unitId, spentAmount, token) => {
-    try {
-        const response = await axios.post(
-            `${baseUrl}/budgets/update-allocated`, { unitId, spentAmount },
-            authHeaders(token)
-        );
+        const response = await axios.post(`${baseUrl}/budget/admin/${budgetId}`, { expenses }, { headers: authHeaders() });
         return response.data;
     } catch (error) {
-        console.error('Error updating budget allocated:', error);
-        throw error.response ? error.response.data : new Error('Failed to update budget allocated');
+        throw error.response ? error.response.data : new Error('Update user budget failed');
     }
 };
 
-// New function to create/update the central budget
-export const createCentralBudget = async(totalAmount, token) => {
+export const updateAdminBudget = async(budgetId, allocations) => {
     try {
-        const response = await axios.post(
-            `${baseUrl}/budgets/central`, { totalAmount },
-            authHeaders(token)
-        );
+        const response = await axios.post(`${baseUrl}/budget/${budgetId}`, { allocations }, { headers: authHeaders() });
         return response.data;
     } catch (error) {
-        console.error('Error creating central budget:', error);
-        throw error.response ? error.response.data : new Error('Failed to create central budget');
+        throw error.response ? error.response.data : new Error('Update admin budget failed');
     }
 };
 
-// Expenses API Endpoints
-export const addExpense = async(expenseData, token) => {
+// Modified getBudgets function to accept token
+export const getBudgets = async(token) => {
     try {
-        const response = await axios.post(`${baseUrl}/expenses/add`, expenseData, authHeaders(token));
-        return response.data;
-    } catch (error) {
-        console.error('Error adding expense:', error);
-        throw error.response ? error.response.data : new Error('Failed to add expense');
-    }
-};
-
-
-// In api.js or wherever your functions are defined
-export const getAllExpenses = async(token) => {
-    try {
-        const response = await axios.get(`${baseUrl}/expenses`, {
+        const response = await axios.get(`${baseUrl}/budget`, {
             headers: {
-                Authorization: `Bearer ${token}`, // Include the token for authorization
+                Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching expenses:", error);
-        throw error; // Rethrow to handle it in the calling component
+        throw error.response ? error.response.data : new Error('Get budgets failed');
     }
 };
 
 
-export const deleteExpense = async(expenseId, token) => {
+// Credit API Endpoints
+export const addCredit = async(creditData) => {
     try {
-        const response = await axios.delete(`${baseUrl}/expenses/${expenseId}`, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
+        const response = await axios.post(`${baseUrl}/credits`, creditData, { headers: authHeaders() });
+        return response.data;
     } catch (error) {
-        console.error('Error deleting expense:', error);
-        throw error.response ? error.response.data : new Error('Failed to delete expense');
+        throw error.response ? error.response.data : new Error('Add credit failed');
     }
 };
 
-export const deleteBudget = async(budgetId, token) => {
+export const getCredits = async() => {
     try {
-        const response = await axios.delete(`${baseUrl}/budgets/${budgetId}`, authHeaders(token));
-        return response.data; // Assuming no response body is returned on success
+        const response = await axios.get(`${baseUrl}/credits`, { headers: authHeaders() });
+        return response.data;
+    } catch (error) {
+        throw error.response ? error.response.data : new Error('Get credits failed');
+    }
+};
+
+export const deleteExpense = async(expenseId) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/expenses/${expenseId}`, { headers: authHeaders() });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error deleting expense: ' + error.message);
+    }
+};
+
+export const deleteBudget = async(budgetId) => {
+    try {
+        const response = await axios.delete(`${baseUrl}/budgets/${budgetId}`, { headers: authHeaders() });
+        return response;
     } catch (error) {
         console.error('Error deleting budget:', error);
-        throw error.response ? error.response.data : new Error('Failed to delete budget');
+        throw error;
     }
 };

@@ -12,13 +12,15 @@ const OrganizationalStructure = () => {
   const [structureData, setStructureData] = useState([]); // To store structure data
   const [expandedItems, setExpandedItems] = useState({}); // To manage expanded/collapsed items
   const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state for handling errors
 
   // Fetch the structure data when the component is mounted
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (!token) {
-          alert("No token found, please log in.");
+          setError("No token found, please log in.");
+          setLoading(false);
           return;
         }
         const data = await getAllAdministrativeUnits(token); // Fetch data from API
@@ -26,7 +28,7 @@ const OrganizationalStructure = () => {
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching data: ", error.response ? error.response.data : error.message);
-        alert("Failed to fetch data: " + (error.response ? error.response.data.message : "Server error."));
+        setError(error.response ? error.response.data.message : "Failed to fetch data.");
         setLoading(false); // Set loading to false if there's an error
       }
     };
@@ -51,7 +53,11 @@ const OrganizationalStructure = () => {
       ) {
         return (
           <div key={item._id} className="org-card">
-            <div onClick={() => toggleExpand(index)} className="org-item-header">
+            <div
+              onClick={() => toggleExpand(index)}
+              className="org-item-header"
+              aria-expanded={isOpen}
+            >
               <h3 className="org-item-name">{item.name}</h3>
               <FontAwesomeIcon
                 icon={isOpen ? faChevronDown : faChevronRight}
@@ -95,6 +101,11 @@ const OrganizationalStructure = () => {
         <div className="loading-container">
           <Spinner animation="border" variant="primary" size="lg" />
           <h4>جاري تحميل البيانات...</h4>
+        </div>
+      ) : error ? (
+        // Show error message if there was an error fetching data
+        <div className="error-container">
+          <h4>{error}</h4>
         </div>
       ) : (
         // Display the organizational structure once loading is complete

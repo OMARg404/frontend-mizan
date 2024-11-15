@@ -2,41 +2,32 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Card, Button, Table, Form } from 'react-bootstrap';
 import { AuthContext } from '../../../../context/AuthContext';
 import { 
-    getAllAdministrativeUnits, 
-    deleteAdministrativeUnit 
-} from '../../../../services/api.js';
-import { 
-    updateBudgetAllocated, 
-    addExpense, 
-    getAllExpenses, 
-    deleteExpense, 
-    deleteBudget 
-} from '../../../../services/api'; // Assuming the path is correct
+    getBudgets,
+    addBudget,
+    deleteExpense,
+    updateAdminBudget
+} from '../../../../services/api'; // Removed deleteBudget import
 import './DepartmentSettings.css';
 
 const DepartmentSettings = () => {
     const { token } = useContext(AuthContext); // Get the token from AuthContext
-    const [units, setUnits] = useState([]); // State to store the administrative units
+    const [budgets, setBudgets] = useState([]); // State to store budgets
     const [expenses, setExpenses] = useState([]); // State to store expenses
-    const [loading, setLoading] = useState(true); // Loading state
     const [spentAmount, setSpentAmount] = useState(0); // State for spending amount
     const [description, setDescription] = useState(""); // State for expense description
     const [unitId, setUnitId] = useState(""); // State for selected unitId
     const [editMode, setEditMode] = useState(false); // State to track if we are in edit mode
-    const [selectedUnit, setSelectedUnit] = useState(null); // State for selected unit in edit mode
+    const [selectedBudget, setSelectedBudget] = useState(null); // State for selected budget in edit mode
+    const [loading, setLoading] = useState(true); // Loading state
 
-    // Fetch administrative units and expenses when the component mounts
+    // Fetch budgets when the component mounts
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch administrative units
-                const unitsData = await getAllAdministrativeUnits(token);
-                setUnits(unitsData);
+                // Fetch budgets
+                const budgetsData = await getBudgets(token);
+                setBudgets(budgetsData);
 
-                // Fetch expenses
-                const expensesData = await getAllExpenses(token);
-                setExpenses(expensesData);
-                
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -47,66 +38,48 @@ const DepartmentSettings = () => {
         fetchData();
     }, [token]);
 
-    // Handle delete action for administrative units
-    const handleDeleteUnit = async (unitId) => {
-        try {
-            await deleteAdministrativeUnit(unitId, token); // Call delete API
-            setUnits(units.filter((unit) => unit.id !== unitId)); // Update state to remove the deleted unit
-        } catch (error) {
-            console.error('Error deleting administrative unit:', error);
-        }
-    };
-
-    // Handle delete action for expenses
+    // Handle delete action for expenses (if necessary)
     const handleDeleteExpense = async (expenseId) => {
         try {
             await deleteExpense(expenseId, token); // Call delete API
             setExpenses(expenses.filter((expense) => expense.id !== expenseId)); // Update state to remove the deleted expense
+            console.log('Expense deleted successfully');
         } catch (error) {
             console.error('Error deleting expense:', error);
         }
     };
 
-    // Handle delete action for budgets
-    const handleDeleteBudget = async (budgetId) => {
-        try {
-            await deleteBudget(budgetId, token); // Call delete API
-            console.log('Budget deleted successfully');
-        } catch (error) {
-            console.error('Error deleting budget:', error);
-        }
-    };
-
     // Handle update action (updating allocated budget)
-    const handleUpdateBudget = async (unitId, spentAmount) => {
+    const handleUpdateBudget = async () => {
         try {
-            console.log("spentAmount "+ spentAmount);
-            await updateBudgetAllocated(unitId, spentAmount, token);
-            // Optionally refresh the unit data here
+            if (selectedBudget) {
+                console.log("spentAmount: ", spentAmount);
+                await updateAdminBudget(selectedBudget.id, spentAmount, token); // Use the correct budget ID
+                setEditMode(false); // Close edit mode after successful update
+                console.log('Budget updated successfully');
+            }
         } catch (error) {
             console.error('Error updating budget:', error);
         }
     };
 
-    // Handle adding a new expense
-    const handleAddExpense = async () => {
+    // Handle adding a new budget
+    const handleAddBudget = async () => {
         try {
-            const expenseData = {
-                description: description,
+            const budgetData = {
+                // Example budget data, replace with actual fields
                 amount: spentAmount,
                 unitId: unitId,
-                budgetId: 'some-budget-id' // Replace with the actual budgetId
             };
 
-            const response = await addExpense(expenseData, token);
+            const response = await addBudget(budgetData, token);
 
             if (response.status === 200) {
-                console.log('Expense added successfully');
-                // Add the new expense to the state
-                setExpenses([...expenses, response.data]);
+                console.log('Budget added successfully');
+                setBudgets([...budgets, response.data]); // Add the new budget to the state
             }
         } catch (error) {
-            console.error('Error adding expense:', error);
+            console.error('Error adding budget:', error);
         }
     };
 
@@ -126,7 +99,6 @@ const DepartmentSettings = () => {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th>المصاريف</th>
                                         <th>المخصص</th>
                                         <th>اسم الوحدة</th>
                                         <th>الوصف</th>
@@ -134,37 +106,25 @@ const DepartmentSettings = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {units.map((unit) => (
-                                        <tr key={unit.id}>
-                                            <td>{unit.spentAmount}</td>
-                                            <td>{unit.allocatedBudget}</td>
-                                            <td>{unit.name}</td>
-                                            <td>{unit.description}</td>
+                                    {budgets.map((budget) => (
+                                        <tr key={budget.id}>
+                                            <td>{budget.amount}</td>
+                                            <td>{budget.unitId}</td>
+                                            <td>{budget.description}</td>
                                             <td>
                                                 <Button 
                                                     variant="warning" 
                                                     onClick={() => {
                                                         setEditMode(true);
-                                                        setSelectedUnit(unit);
-                                                        setUnitId(unit.id);
-                                                        setSpentAmount(unit.spentAmount);
+                                                        setSelectedBudget(budget);
+                                                        setUnitId(budget.unitId);
+                                                        setSpentAmount(budget.amount);
                                                     }} 
                                                     className="me-2"
                                                 >
                                                     تعديل المخصص
                                                 </Button>
-                                                <Button 
-                                                    variant="danger" 
-                                                    onClick={() => handleDeleteUnit(unit.id)}
-                                                >
-                                                    حذف
-                                                </Button>
-                                                <Button 
-                                                    variant="danger" 
-                                                    onClick={() => handleDeleteBudget(unit.budgetId)}
-                                                >
-                                                    حذف المخصص المركزي
-                                                </Button>
+                                                {/* Removed delete budget button */}
                                             </td>
                                         </tr>
                                     ))}
@@ -198,11 +158,7 @@ const DepartmentSettings = () => {
                                         onChange={(e) => setUnitId(e.target.value)}
                                     >
                                         <option value="">اختار الوحدة</option>
-                                        {units.map((unit) => (
-                                            <option key={unit.id} value={unit.id}>
-                                                {unit.name}
-                                            </option>
-                                        ))}
+                                        {/* Add your units here if you fetch them */}
                                     </Form.Control>
                                 </Form.Group>
 
@@ -226,7 +182,7 @@ const DepartmentSettings = () => {
                                     />
                                 </Form.Group>
 
-                                <Button variant="primary" onClick={handleAddExpense}>إضافة مصروف</Button>
+                                <Button variant="primary" onClick={handleAddBudget}>إضافة مخصص</Button>
                             </Form>
 
                             <h4>المصاريف</h4>
@@ -245,7 +201,10 @@ const DepartmentSettings = () => {
                                             <td>{expense.amount}</td>
                                             <td>{expense.unitId}</td>
                                             <td>
-                                                <Button variant="danger" onClick={() => handleDeleteExpense(expense.id)} >
+                                                <Button 
+                                                    variant="danger" 
+                                                    onClick={() => handleDeleteExpense(expense.id)}
+                                                >
                                                     حذف
                                                 </Button>
                                             </td>

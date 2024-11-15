@@ -1,52 +1,58 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Card, Table, Spinner } from 'react-bootstrap'; // Import Spinner
 import { AuthContext } from '../../context/AuthContext.js';
-import { 
-    getAllAdministrativeUnits, 
-    getAllExpenses 
-} from '../../services/api.js'; // Assuming the path is correct
+import { getBudgets } from '../../services/api.js'; // Assuming getBudgets is available in api.js
 import './Budget.css';
 
 const Budget = () => {
     const { token } = useContext(AuthContext); // Get the token from AuthContext
-    const [units, setUnits] = useState([]); // State to store the administrative units
-    const [expenses, setExpenses] = useState([]); // State to store expenses
+    const [budgets, setBudgets] = useState([]); // State to store the budgets
     const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
 
-    // Fetch administrative units and expenses when the component mounts
+    // Fetch budgets when the component mounts
     useEffect(() => {
         const fetchData = async () => {
+            if (!token) {
+                setError('لا يوجد رمز دخول'); // Display error if no token
+                setLoading(false);
+                return;
+            }
+
             try {
-                // Fetch administrative units
-                const unitsData = await getAllAdministrativeUnits(token);
-                setUnits(unitsData);
-
-                // Fetch expenses
-                const expensesData = await getAllExpenses(token);
-                
-                // Ensure expensesData is an array before setting the state
-                if (Array.isArray(expensesData)) {
-                    setExpenses(expensesData);
-                } else {
-                    console.error('Expected an array of expenses, but got:', expensesData);
-                    setExpenses([]); // Set as an empty array if the data is invalid
-                }
-
-                setLoading(false); // Set loading to false after data is fetched
+                const budgetsData = await getBudgets(token); // Pass token to getBudgets
+                setBudgets(budgetsData); // Set budgets data
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setLoading(false);
+                // Check if the error is related to token authorization
+                if (error.response && error.response.status === 401) {
+                    setError('رمز الدخول غير صالح أو منتهي الصلاحية');
+                } else {
+                    setError('فشل في تحميل البيانات');
+                }
+            } finally {
+                setLoading(false); // Set loading to false after data is fetched or error occurs
             }
         };
 
         fetchData();
-    }, [token]);
+    }, [token]); // Depend on token to refetch data when it changes
 
+    // Display loading spinner while data is being fetched
     if (loading) {
         return (
             <div className="loading-container">
                 <Spinner animation="border" variant="primary" size="lg" />
                 <h4>جاري تحميل البيانات...</h4>
+            </div>
+        );
+    }
+
+    // Display error message if there is an error
+    if (error) {
+        return (
+            <div className="error-container">
+                <h4>{error}</h4>
             </div>
         );
     }
@@ -57,52 +63,32 @@ const Budget = () => {
                 <Col>
                     <Card>
                         <Card.Header>
-                            <h3>إعدادات الإدارة</h3>
+                            <h3>إعدادات الميزانية</h3>
                         </Card.Header>
                         <Card.Body>
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th>المصاريف</th>
-                                        <th>المخصص</th>
+                                        <th>المبلغ المصروف</th>
+                                        <th>المبلغ المخصص</th>
                                         <th>اسم الوحدة</th>
                                         <th>الوصف</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {units.map((unit) => (
-                                        <tr key={unit.id}>
-                                            <td>{unit.spentAmount}</td>
-                                            <td>{unit.allocatedBudget}</td>
-                                            <td>{unit.name}</td>
-                                            <td>{unit.description}</td>
+                                    {budgets.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="4">لا توجد بيانات الميزانية</td>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-
-                            <h4>المصاريف</h4>
-                            <Table striped bordered hover responsive>
-                                <thead>
-                                    <tr>
-                                        <th>الوصف</th>
-                                        <th>المبلغ</th>
-                                        <th>وحدة ID</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {expenses.length > 0 ? (
-                                        expenses.map((expense) => (
-                                            <tr key={expense.id}>
-                                                <td>{expense.description}</td>
-                                                <td>{expense.amount}</td>
-                                                <td>{expense.unitId}</td>
+                                    ) : (
+                                        budgets.map((budget) => (
+                                            <tr key={budget.id}>
+                                                <td>{budget.spentAmount}</td>
+                                                <td>{budget.allocatedBudget}</td>
+                                                <td>{budget.unitName}</td>
+                                                <td>{budget.description}</td>
                                             </tr>
                                         ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="3">No expenses data available</td>
-                                        </tr>
                                     )}
                                 </tbody>
                             </Table>

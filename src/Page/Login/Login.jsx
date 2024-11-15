@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { loginUser } from '../../services/api';
+import { loginUser } from '../../services/api';  // Ensure this function is imported correctly
 import { AuthContext } from '../../context/AuthContext';
 import './Login.css';
 
@@ -23,20 +23,33 @@ const Login = () => {
         password: Yup.string().required('Password is required'),
     });
 
+    // Updated handleSubmit function to handle login flow
     const handleSubmit = async (values, { setSubmitting, setErrors }) => {
         try {
             const data = await loginUser(values.email, values.password);
-            if (data.token && data.user) {
-                login(data.token, data.user);
+    
+            if (data && data.token) {
+                // Check if user data is available
+                if (data.user) {
+                    login(data.token, data.user);
+                } else {
+                    // If no user data, you can choose how to handle this (e.g., login with token only)
+                    login(data.token, null);
+                }
+    
+                // Navigate to the home page after successful login
                 navigate('/home');
             } else {
-                setErrors({ general: 'Login failed: No token received.' });
+                setErrors({ general: 'Login failed: Invalid email or password.' });
             }
         } catch (error) {
-            setErrors({ general: error.message || 'Invalid email or password' });
+            // Handle network or other server issues
+            const errorMessage = error.response?.data?.message || error.message || 'An error occurred during login';
+            setErrors({ general: errorMessage });
         }
         setSubmitting(false);
     };
+    
 
     const handleAdminLogin = () => {
         navigate('/adminLogin');
@@ -49,7 +62,7 @@ const Login = () => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmit} // Pass handleSubmit function here
                 >
                     {({ isSubmitting, errors }) => (
                         <Form className="login-form">

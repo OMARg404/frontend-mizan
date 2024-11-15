@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { createUser, getAllUsers } from '../../../../services/api';
+import React, { useState, useContext } from 'react';
+import { createUser } from '../../../../services/api'; // Removed getAllUsers import
 import { AuthContext } from '../../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './UserSettings.css';
@@ -9,50 +9,26 @@ const UserSettings = () => {
   const navigate = useNavigate();
   
   // State variables
-  const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ name: '', email: '', password: '' });
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Log token to check if it's valid
-  console.log('Token:', token);
-
-  // Fetch users from the API
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        console.log('جاري جلب المستخدمين...');
-        const response = await getAllUsers(token);
-        console.log('المستخدمين:', response); // Log the response
-        setUsers(response);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'فشل في جلب المستخدمين');
-        setLoading(false);
-      }
-    };
-
-    if (token) {
-      fetchUsers(); // Only fetch if token exists
-    } else {
-      navigate('/login'); // Redirect to login if no token
-    }
-  }, [token, navigate]);
+  const [loading, setLoading] = useState(false);
 
   // Handle creating a new user
   const handleCreateUser = async () => {
     try {
+      setLoading(true); // Set loading to true while the request is being made
       const newUserData = {
         name: newUser.name,
         email: newUser.email,
         password: newUser.password,
       };
       const response = await createUser(newUserData, token);
-      setUsers([...users, response]);
-      setNewUser({ name: '', email: '', password: '' });
+      setNewUser({ name: '', email: '', password: '' }); // Reset form after successful creation
       alert('تم إنشاء المستخدم بنجاح');
+      setLoading(false); // Set loading to false after the request is completed
     } catch (err) {
       setError(err.message || 'فشل في إنشاء المستخدم');
+      setLoading(false); // Set loading to false if an error occurs
     }
   };
 
@@ -95,33 +71,6 @@ const UserSettings = () => {
             onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
           />
           <button className="btn btn-success" onClick={handleCreateUser}>إنشاء مستخدم</button>
-        </div>
-
-        {/* List of Users */}
-        <div className="admin-list">
-          <h4>كل المستخدمين</h4>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>الاسم</th>
-                <th>البريد الإلكتروني</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.length === 0 ? (
-                <tr>
-                  <td colSpan="2">لم يتم العثور على مستخدمين</td>
-                </tr>
-              ) : (
-                users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>

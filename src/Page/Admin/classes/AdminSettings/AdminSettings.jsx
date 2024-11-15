@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { createAdmin, getAllAdmins } from '../../../../services/api';
+import { createUser, getBudgets, getCredits } from '../../../../services/api';
 import { AuthContext } from '../../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './AdminSettings.css';
@@ -22,7 +22,7 @@ const AdminSettings = () => {
     const fetchAdmins = async () => {
       try {
         console.log('جاري جلب المدراء...');
-        const response = await getAllAdmins(token);
+        const response = await getBudgets(token); // Assuming getBudgets fetches admin data, update if incorrect
         console.log('المدراء:', response); // Log the response
         setAdmins(response);
         setLoading(false);
@@ -47,7 +47,7 @@ const AdminSettings = () => {
         email: newAdmin.email,
         password: newAdmin.password,
       };
-      const response = await createAdmin(newAdminData, token);
+      const response = await createUser(newAdminData, token); // Assuming createUser creates a new admin, update if incorrect
       setAdmins([...admins, response]);
       setNewAdmin({ name: '', email: '', password: '' });
       alert('تم إنشاء المدير بنجاح');

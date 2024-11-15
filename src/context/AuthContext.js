@@ -1,37 +1,45 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-// Create the AuthContext
+// Create a context
 export const AuthContext = createContext();
 
+// AuthProvider component
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(localStorage.getItem('jwtToken')); // Get token from localStorage
 
-    // Check for saved user data (token) in localStorage on initial load
     useEffect(() => {
-        const savedUser = JSON.parse(localStorage.getItem('jwtToken'));
-        if (savedUser) {
-            setUser(savedUser);
-            setToken(savedUser.token);
-        }
-    }, []);
+        if (token) {
+            try {
+                // Decode the JWT token and check if it's valid (e.g., expired)
+                const decoded = JSON.parse(atob(token.split('.')[1])); // Decode the payload
+                const expiryTime = decoded.exp * 1000; // Token expiry time (convert to ms)
 
-    // Login function: Save user and token in state and localStorage
-    const login = (token, userData) => {
-        const userWithToken = {
-            ...userData,
-            token,
-        };
-        setUser(userWithToken);
-        setToken(token);
-        localStorage.setItem('jwtToken', JSON.stringify(userWithToken)); // Store user data in localStorage
+                if (expiryTime < Date.now()) {
+                    // If the token is expired, clear it from localStorage and reset state
+                    throw new Error('Token expired');
+                }
+
+                setUser(decoded.user); // Set user data from decoded token
+            } catch (error) {
+                console.error('Invalid or expired token', error);
+                setToken(null); // Clear invalid token
+                setUser(null); // Clear user data
+                localStorage.removeItem('jwtToken'); // Remove invalid token from localStorage
+            }
+        }
+    }, [token]);
+
+    const login = (newToken, newUser) => {
+        localStorage.setItem('jwtToken', newToken); // Save the new token to localStorage
+        setToken(newToken);
+        setUser(newUser);
     };
 
-    // Logout function: Clear user data and remove token from localStorage
     const logout = () => {
-        setUser(null);
+        localStorage.removeItem('jwtToken'); // Remove token from localStorage
         setToken(null);
-        localStorage.removeItem('jwtToken'); // Remove user data from localStorage
+        setUser(null);
     };
 
     return ( <

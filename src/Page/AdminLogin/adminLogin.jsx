@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { loginAdmin } from '../../services/api';
+import { loginUser } from '../../services/api';
 import { AuthContext } from '../../context/AuthContext';
 import './adminLogin.css';
 
@@ -23,7 +23,7 @@ const AdminLogin = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const data = await loginAdmin(values.username, values.password);
+      const data = await loginUser(values.username, values.password);
       if (data.token && data.user) {
         login(data.token, data.user); // Save token and user data in context
         navigate('/admin'); // Redirect to the admin's home page
