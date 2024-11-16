@@ -25,19 +25,19 @@ const CustomNavbar = () => {
             <Nav className="me-auto">
               <NavLinkItem to="/home" label="الصفحة الرئيسية" icon={faHome} />
               <NavLinkItem to="/budget" label="الميزانية" icon={faMoneyBill} />
-              <NavLinkItem to="/credits" label="الإعتمادات" icon={faCreditCard} />
-              <NavLinkItem to="/dashboard" label="لوحة التحكم" icon={faTachometerAlt} />
+              <NavLinkItem to="/credits" label="الطلبات" icon={faCreditCard} />
               <NavLinkItem to="/incomingrequests" label="الطلبات الواردة" icon={faEnvelopeOpenText} />
+              <NavLinkItem to="/dashboard" label="لوحة التحكم" icon={faTachometerAlt} />
               <NavLinkItem to="/reports" label="التقارير" icon={faFileAlt} />
-              <NavLinkItem to="/requests" label="الطلبات" icon={faClipboard} />
+              {/* <NavLinkItem to="/requests" label="الطلبات" icon={faClipboard} /> */}
               <NavLinkItem to="/userpermissions" label="أذونات المستخدم" icon={faUserShield} />
               <NavLinkItem to="/admin" label="الصفحة الإدارية" icon={faUserCog} />
-              <Nav.Item>
+              {/* <Nav.Item>
                 <span className="nav-link" onClick={toggleNotifications}>
                   <FontAwesomeIcon icon={faBell} className="me-2" />
                   <span className="arabic-text">الإشعارات</span>
                 </span>
-              </Nav.Item>
+              </Nav.Item> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

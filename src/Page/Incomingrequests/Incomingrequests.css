@@ -1,0 +1,58 @@
+/* Loading and Error Containers */
+
+.loading-container,
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+}
+
+.credits-container {
+    margin-top: 20px;
+}
+
+.credits-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.credits-table {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.credits-table th,
+.credits-table td {
+    padding: 18px 20px;
+    border: 1px solid #dcdfe1;
+    text-align: left;
+}
+
+.credits-table thead {
+    background-color: #007bff;
+    /* Changed background to blue */
+    color: white;
+    font-weight: bold;
+}
+
+.error-message {
+    text-align: center;
+    color: red;
+    font-size: 1.2em;
+}
+
+.cc {
+    font-size: 1.5em;
+    margin-top: 20rem;
+}
+
+.ccc {
+    font-size: 1.5em;
+    margin-top: 30rem;
+}

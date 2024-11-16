@@ -1,15 +1,164 @@
-/* Budget.css */
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
+/* DigitalClock Container Styles */
+
+.digital-clock-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 2px solid #007bff;
+    /* Added border with a blue color */
 }
 
-.loading-container h4 {
-    margin-top: 20px;
-    font-size: 20px;
+.digital-clock-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Stat Cards */
+
+.stat-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h5 {
     color: #007bff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.stat-card h3 {
+    color: #343a40;
     font-weight: bold;
+    font-size: 24px;
+}
+
+.stat-card p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+
+/* Budget Table */
+
+.budget-table {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.budget-table th,
+.budget-table td {
+    padding: 18px 20px;
+    border: 1px solid #dcdfe1;
+    text-align: left;
+    color: #000;
+}
+
+.budget-table thead {
+    background-color: #007bff;
+    /* Changed background to blue */
+    color: white;
+    font-weight: bold;
+    color: #000;
+}
+
+.budget-table tbody tr:hover {
+    background-color: #f1f1f1;
+    /* Added hover effect for rows */
+    cursor: pointer;
+}
+
+.budget-table td {
+    color: #495057;
+}
+
+.budget-table tbody tr.no-data {
+    background-color: #f8d7da;
+    font-style: italic;
+    color: #721c24;
+}
+
+
+/* Add colors for the relation between 'المخصص' and 'المصروف' */
+
+.budget-table .highlight {
+    background-color: #ffecb3;
+    /* Light yellow for highlights */
+}
+
+.budget-table .positive {
+    background-color: #d4edda;
+    /* Greenish background for positive relation */
+}
+
+.budget-table .negative {
+    background-color: #f8d7da;
+    /* Red for negative relation */
+}
+
+
+/* Action Buttons */
+
+.action-buttons {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.action-buttons .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-buttons .btn:hover {
+    background-color: #005f73;
+    transform: translateY(-2px);
+}
+
+.action-buttons .btn:focus {
+    outline: none;
+}
+
+.action-buttons .btn-success {
+    background-color: #28a745;
+}
+
+.action-buttons .btn-primary {
+    background-color: #007bff;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 767px) {
+    .budget-table th,
+    .budget-table td {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+    .stat-card {
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+    .action-buttons .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
 }

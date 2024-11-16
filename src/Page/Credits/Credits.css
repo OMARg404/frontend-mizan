@@ -1,0 +1,145 @@
+/* src/Page/Credits/Credits.css */
+
+
+/* Credits Container */
+
+.credits-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    width: 90%;
+    max-width: 900px;
+}
+
+
+/* Title of Credits Section */
+
+.credits-container h2 {
+    font-size: 2rem;
+    color: #007f91;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+
+/* Credit Items List */
+
+.credits-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.credits-container li {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.credits-container li h3 {
+    font-size: 1.4rem;
+    font-family: 'Press Start 2P', cursive;
+    color: #1565c0;
+    margin-bottom: 8px;
+}
+
+.credits-container li p {
+    font-size: 1rem;
+    color: #1c1c1c;
+    margin-bottom: 5px;
+}
+
+.credits-container li p:last-child {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+
+/* Add Credit Form Styling */
+
+.credits-container form {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.credits-container form input,
+.credits-container form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #007f91;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    background-color: #7c848b;
+    color: white;
+}
+
+.credits-container form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.credits-container form button {
+    background-color: #007f91;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+}
+
+.credits-container form button:hover {
+    background-color: #005f73;
+    transform: translateY(-2px);
+}
+
+
+/* Responsive Design for Mobile */
+
+@media (max-width: 768px) {
+    .credits-container {
+        width: 95%;
+        padding: 15px;
+    }
+    .credits-container h2 {
+        font-size: 1.8rem;
+    }
+    .credits-container li h3 {
+        font-size: 1.2rem;
+    }
+    .credits-container form button {
+        padding: 10px 20px;
+    }
+}
+
+
+/* Credits.css */
+
+.error-container {
+    color: red;
+    /* Set the text color to red */
+    font-weight: bold;
+    /* Make the text bold for better visibility */
+    margin: 20px 0;
+    /* Add some margin for spacing */
+    padding: 10px;
+    /* Add some padding for better readability */
+    border: 1px solid red;
+    /* Add a border to make it stand out */
+    background-color: #ffe6e6;
+    /* Optional: Add a light red background */
+}

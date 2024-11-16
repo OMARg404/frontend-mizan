@@ -1,32 +1,42 @@
-/* DepartmentSettings.css */
-
-
-/* الصفحة الأساسية */
+/* DepartmentSettings Container Styles */
 
 .department-settings {
-    margin-top: 30rem;
+    margin-top: 30px;
+    padding: 20px;
     background-color: #f8f9fa;
-    padding: 30px;
-    color: #212529;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.department-settings:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 
-/* العنوان */
+/* Page Title */
 
 .page-title {
+    font-size: 2rem;
     color: #343a40;
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 30px;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 
-/* قسم تقديمي */
+/* Intro Section */
 
 .intro-section {
     background-color: #e9ecef;
     padding: 20px;
     border-radius: 10px;
+    transition: padding 0.3s ease;
+}
+
+.intro-section:hover {
+    padding: 25px;
 }
 
 .intro-section p {
@@ -34,14 +44,8 @@
     color: #6c757d;
 }
 
-.intro-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
 
-
-/* الكروت */
+/* Card Styles */
 
 .card {
     border: none;
@@ -51,7 +55,7 @@
 
 .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .card-body {
@@ -69,7 +73,7 @@
 }
 
 
-/* نموذج إضافة وحدة جديدة */
+/* Create Unit Form */
 
 .create-unit-form {
     background-color: #ffffff;
@@ -88,58 +92,48 @@
 }
 
 
-/* DepartmentSettings.css */
-
-.department-settings {
-    background-color: #f8f9fa;
-    padding: 20px;
-    padding-top: 15px;
-    /* تقليل المسافة العلوية */
-}
-
-.page-title {
-    font-size: 2rem;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.intro-section {
-    background-color: #e9ecef;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-
-.card {
-    border: none;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.create-unit-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Media Queries for smaller devices */
+/* Responsive Design for Smaller Screens */
 
 @media (max-width: 768px) {
     .page-title {
         font-size: 1.8rem;
     }
     .intro-section {
-        padding: 10px;
+        padding: 15px;
     }
     .create-unit-form {
         padding: 15px;
     }
+    .department-settings {
+        padding: 15px;
+    }
+    .card-body {
+        text-align: left;
+    }
+}
+
+.budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.budget-table th,
+.budget-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.budget-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.budget-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.cccc {
+    margin-top: 40rem;
 }

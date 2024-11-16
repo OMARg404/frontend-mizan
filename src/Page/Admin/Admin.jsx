@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import withAdminAuth from './withAdminAuth';
+
 import './Admin.css';
 
 const Admin = () => {
@@ -52,4 +52,4 @@ const Admin = () => {
   );
 };
 
-export default withAdminAuth(Admin);
+export default Admin;

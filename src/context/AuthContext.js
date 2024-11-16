@@ -47,12 +47,13 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
         setIsAuthenticated(false);
-        navigate('/login'); // Redirect to login page after logout
+        navigate('/'); // Redirect to login page after logout
     };
 
     return ( <
         AuthContext.Provider value = {
-            { user, token, login, logout, isAuthenticated } } > { children } <
+            { user, token, login, logout, isAuthenticated }
+        } > { children } <
         /AuthContext.Provider>
     );
 };
