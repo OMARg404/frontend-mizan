@@ -60,7 +60,7 @@ export const updateUserBudget = async(budgetId, expenses, token) => {
 
 export const updateAdminBudget = async(budgetId, allocations, token) => {
     try {
-        const response = await axios.post(`${baseUrl}/budget/${budgetId}`, { allocations }, { headers: { token } });
+        const response = await axios.put(`${baseUrl}/budget/${budgetId}`, { allocations }, { headers: { token } });
         return response.data;
     } catch (error) {
         console.error("Update admin budget failed:", error);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Container, Row, Col, Table, Spinner } from 'react-bootstrap';
 import { getCredits } from '../../services/api';
 import { AuthContext } from '../../context/AuthContext';
@@ -10,7 +10,8 @@ const IncomingRequests = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchCredits = async () => {
+    // Memoize fetchCredits to avoid re-creating it on every render
+    const fetchCredits = useCallback(async () => {
         try {
             if (!token) {
                 throw new Error("Token is missing");
@@ -34,11 +35,11 @@ const IncomingRequests = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [token]); // `fetchCredits` depends on `token`
 
     useEffect(() => {
         fetchCredits();
-    }, [token]);
+    }, [token, fetchCredits]); // Add `fetchCredits` to the dependency array
 
     useEffect(() => {
         console.log("Credits state:", credits);
@@ -62,44 +63,44 @@ const IncomingRequests = () => {
     }
 
     return (
-        <div className='ccc'> 
-        <Container className="credits-container">
-            <Row>
-                <Col>
-                    <h2 className="credits-title">الطلبات الواردة</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Table striped bordered hover responsive className="credits-table">
-                        <thead>
-                            <tr>
-                                <th>اسم</th>
-                                <th>السبب</th>
-                                <th>التخصيص</th>
-                                <th>وقت الإنشاء</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {credits.length > 0 ? (
-                                credits.map((credit) => (
-                                    <tr key={credit._id}>
-                                        <td>{credit.name}</td>
-                                        <td>{credit.reason}</td>
-                                        <td>{credit.allocation} ريال</td>
-                                        <td>{new Date(credit.createdAt).toLocaleString()}</td>
-                                    </tr>
-                                ))
-                            ) : (
+        <div className='cccccc'> 
+            <Container className="credits-container">
+                <Row>
+                    <Col>
+                        <h2 className="credits-title">الطلبات الواردة</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Table striped bordered hover responsive className="credits-table">
+                            <thead>
                                 <tr>
-                                    <td colSpan="4" className="error-message">لا توجد أرصدة حالياً.</td>
+                                    <th>اسم</th>
+                                    <th>السبب</th>
+                                    <th>التخصيص</th>
+                                    <th>وقت الإنشاء</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </Table>
-                </Col>
-            </Row>
-        </Container>
+                            </thead>
+                            <tbody>
+                                {credits.length > 0 ? (
+                                    credits.map((credit) => (
+                                        <tr key={credit._id}>
+                                            <td>{credit.name}</td>
+                                            <td>{credit.reason}</td>
+                                            <td>{credit.allocation} ريال</td>
+                                            <td>{new Date(credit.createdAt).toLocaleString()}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="error-message">لا توجد أرصدة حالياً.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 };

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Card, Table, Button, ProgressBar, Spinner, Form } from 'react-bootstrap';
 import { AuthContext } from '../../../../context/AuthContext';
 import { getBudgets, addBudget, updateAdminBudget } from '../../../../services/api';
-import DigitalClock from '../../../../components/Navbar/DigitalClock'; // Import DigitalClock component
-import * as XLSX from 'xlsx'; // Import xlsx library
-import { saveAs } from 'file-saver'; // Import file-saver for saving files
+import DigitalClock from '../../../../components/Navbar/DigitalClock';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import './DepartmentSettings.css';
 
 const DepartmentSettings = () => {
@@ -28,14 +28,12 @@ const DepartmentSettings = () => {
 
             try {
                 const response = await getBudgets(token);
-                console.log('تم جلب بيانات الميزانية:', response); // Log the fetched data for debugging
                 if (response && Array.isArray(response.Budgets)) {
-                    setBudgets(response.Budgets); // Set only the Budgets array
+                    setBudgets(response.Budgets);
                 } else {
                     setError('تم استلام بيانات غير صالحة من الخادم');
                 }
             } catch (error) {
-                console.error('خطأ في جلب البيانات:', error);
                 if (error.response && error.response.status === 401) {
                     setError('التوكن منتهي الصلاحية أو غير صالح، يرجى تسجيل الدخول مرة أخرى');
                     logout();
@@ -50,23 +48,34 @@ const DepartmentSettings = () => {
         fetchData();
     }, [token, logout]);
 
+    // Update Budget handler
     const handleUpdateBudget = async () => {
+        if (spentAmount <= 0 || !selectedBudget) {
+            alert("يرجى إدخال قيمة صالحة للمبلغ");
+            return;
+        }
         try {
-            if (selectedBudget) {
-                await updateAdminBudget(selectedBudget._id, spentAmount, token);
-                setEditMode(false);
-                const updatedBudgets = budgets.map(budget =>
-                    budget._id === selectedBudget._id ? { ...budget, amount: spentAmount } : budget
-                );
-                setBudgets(updatedBudgets);
-                setSelectedBudget(null);
-            }
+            const updatedBudgetData = {
+                amount: spentAmount,
+            };
+
+            const updatedBudget = await updateAdminBudget(selectedBudget._id, updatedBudgetData, token);
+            setEditMode(false);
+            setBudgets(budgets.map(budget => 
+                budget._id === selectedBudget._id ? { ...budget, allocation: spentAmount } : budget
+            ));
+            setSelectedBudget(null);
         } catch (error) {
             console.error('Error updating budget:', error);
         }
     };
 
+    // Add Budget handler
     const handleAddBudget = async () => {
+        if (spentAmount <= 0 || !unitId || !description) {
+            alert("يرجى ملء جميع الحقول بشكل صحيح");
+            return;
+        }
         try {
             const budgetData = {
                 amount: spentAmount,
@@ -76,11 +85,15 @@ const DepartmentSettings = () => {
 
             const newBudget = await addBudget(budgetData, token);
             setBudgets([...budgets, newBudget]);
+            setSpentAmount(0);
+            setUnitId("");
+            setDescription("");
         } catch (error) {
             console.error('Error adding budget:', error);
         }
     };
 
+    // Excel download handler
     const downloadExcel = () => {
         const ws = XLSX.utils.json_to_sheet(budgets);
         const wb = XLSX.utils.book_new();
@@ -108,13 +121,12 @@ const DepartmentSettings = () => {
     }
 
     return (
-        <div className="cccc">
-        <div className="department-settings">
+        <div className="department-settings cccc">
             <Container>
                 <Container className="digital-clock-container">
                     <Row>
                         <Col>
-                            <DigitalClock /> {/* DigitalClock component */}
+                            <DigitalClock />
                         </Col>
                     </Row>
                 </Container>
@@ -132,7 +144,7 @@ const DepartmentSettings = () => {
                                             <th>المبلغ المخصص</th>
                                             <th>اسم الوحدة</th>
                                             <th>الوصف</th>
-                                            <th>الإجراءات</th> 
+                                            <th>الإجراءات</th>
                                             <th>العلاقة بين المصروف والمخصص</th>
                                         </tr>
                                     </thead>
@@ -160,7 +172,7 @@ const DepartmentSettings = () => {
                                                                     setEditMode(true);
                                                                     setSelectedBudget(budget);
                                                                     setUnitId(budget.unitId);
-                                                                    setSpentAmount(budget.allocation); // or another value if needed
+                                                                    setSpentAmount(budget.allocation); 
                                                                     setDescription(budget.desc);
                                                                 }}
                                                                 className="me-2"
@@ -169,9 +181,9 @@ const DepartmentSettings = () => {
                                                             </Button>
                                                         </td>
                                                         <td>
-                                                            <ProgressBar 
-                                                                now={percentage} 
-                                                                label={`${percentage.toFixed(2)}%`} 
+                                                            <ProgressBar
+                                                                now={percentage}
+                                                                label={`${percentage.toFixed(2)}%`}
                                                                 variant={percentage >= 100 ? 'danger' : 'success'}
                                                             />
                                                         </td>
@@ -206,41 +218,36 @@ const DepartmentSettings = () => {
                                             value={unitId}
                                             onChange={(e) => setUnitId(e.target.value)}
                                         >
-                                            <option value="">اختار الوحدة</option>
-                                            {/* Add your units here if you fetch them */}
+                                            {/* Add unit options here */}
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="description">
                                         <Form.Label>الوصف</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder="أدخل وصف المصروف"
+                                            placeholder="أدخل الوصف"
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group controlId="spentAmount">
-                                        <Form.Label>المبلغ المخصص</Form.Label>
+                                        <Form.Label>المبلغ المصروف</Form.Label>
                                         <Form.Control
                                             type="number"
-                                            placeholder="أدخل المبلغ"
+                                            placeholder="أدخل المبلغ المصروف"
                                             value={spentAmount}
                                             onChange={(e) => setSpentAmount(e.target.value)}
                                         />
                                     </Form.Group>
-                                    <Button variant="primary" onClick={handleAddBudget}>إضافة مخصص</Button>
+                                    <Button variant="primary" onClick={handleAddBudget}>إضافة المصروف</Button>
                                 </Form>
+
+                                <Button variant="secondary" onClick={downloadExcel}>تنزيل الإكسل</Button>
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
-                <Row>
-                    <Col className="text-center">
-                        <Button variant="success" onClick={downloadExcel}>تحميل Excel</Button>
-                    </Col>
-                </Row>
             </Container>
-        </div>
         </div>
     );
 };
