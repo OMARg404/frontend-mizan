@@ -263,3 +263,11 @@ body {
 .blinking {
     animation: blink 1s infinite;
 }
+@media (forced-colors: active) {
+    /* Your styles for forced colors */
+    body {
+      background-color: Window;
+      color: WindowText;
+    }
+  }
+  

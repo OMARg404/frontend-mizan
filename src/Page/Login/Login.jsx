@@ -90,9 +90,9 @@ const Login = () => {
                             <button type="submit" className="login-button btn btn-primary" disabled={isSubmitting}>
                                 {isSubmitting ? <div className="spinner"></div> : 'Login'}
                             </button>
-                            <button type="button" className="admin-login-button btn btn-secondary" onClick={handleAdminLogin}>
+                            {/* <button type="button" className="admin-login-button btn btn-secondary" onClick={handleAdminLogin}>
                                 Admin
-                            </button>
+                            </button> */}
                         </Form>
                     )}
                 </Formik>
