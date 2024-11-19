@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
                 const decoded = JSON.parse(atob(token.split('.')[1]));
                 const expiryTime = decoded.exp * 1000;
 
+                // Check if the token is expired
                 if (expiryTime < Date.now()) {
                     throw new Error('Token expired');
                 }
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
                 navigate('/'); // Redirect to login if the token is invalid
             }
         } else {
-            setIsAuthenticated(false); // If no token exists
+            setIsAuthenticated(false); // If no token exists, set authentication to false
         }
     }, [token, navigate]);
 

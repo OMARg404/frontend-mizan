@@ -1,0 +1,80 @@
+/* src/Page/Reports/Reports.css */
+
+.reports-container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    direction: rtl; /* Right-to-left layout */
+}
+
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #555;
+}
+
+table td {
+    background-color: #fff;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+p {
+    text-align: center;
+    font-size: 1rem;
+    /* Red for error messages */
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    table th, table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+.ne{
+    
+    margin-top: 20rem;
+}

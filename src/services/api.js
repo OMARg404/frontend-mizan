@@ -46,7 +46,7 @@ export const getUsers = async(token) => {
         throw error.response ? error.response.data : new Error('Get users failed');
     }
 };
-
+// المفروض بالتوكن بس هجيب ال id منين
 export const getUser = async(userId, token) => {
     try {
         const response = await axios.get(`${baseUrl}/user/${userId}`, { headers: { token } });
@@ -66,7 +66,7 @@ export const updateUser = async(userId, userData, token) => {
         throw error.response ? error.response.data : new Error('Update user failed');
     }
 };
-
+// دي بتمسح اليوزر نفسه 
 export const deleteUser = async(userId, token) => {
     try {
         const response = await axios.delete(`${baseUrl}/user/${userId}`, { headers: { token } });
@@ -150,15 +150,21 @@ export const getCredits = async(token) => {
 
 export const addCredit = async(creditData, token) => {
     try {
-        const response = await axios.post(`${baseUrl}/credits`, creditData, { headers: { token } });
+        const response = await axios.post(`${baseUrl}/credits`, creditData, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Use Bearer token for authorization
+                'Content-Type': 'application/json' // Ensure the content type is JSON
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Add credit failed:", error);
+        // Throw a more detailed error message if available
         throw error.response ? error.response.data : new Error('Add credit failed');
     }
 };
 
-// Reports API
+// Reports API مفهاش شهور اصلا
 export const getMonthlyReports = async(token) => {
     try {
         const response = await axios.get(`${baseUrl}/monthly-report`, { headers: { token } });

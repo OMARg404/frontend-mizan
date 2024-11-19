@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Table, Spinner } from 'react-bootstrap';
 import { getCredits } from '../../services/api';
 import { AuthContext } from '../../context/AuthContext';
@@ -10,40 +10,19 @@ const IncomingRequests = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Memoize fetchCredits to avoid re-creating it on every render
-    const fetchCredits = useCallback(async () => {
-        try {
-            if (!token) {
-                throw new Error("Token is missing");
-            }
-
-            console.log("Fetching credits with token:", token);
-
-            const response = await getCredits(token);
-
-            console.log("API Response:", response);
-
-            if (response && Array.isArray(response.Credits)) {
-                setCredits(response.Credits);
-            } else {
-                console.error("Invalid response format:", response);
-                setCredits([]);
-            }
-        } catch (error) {
-            console.error("Error fetching credits:", error);
-            setError(error.message || 'ليس لديك صلحيات');
-        } finally {
-            setLoading(false);
-        }
-    }, [token]); // `fetchCredits` depends on `token`
-
     useEffect(() => {
+        const fetchCredits = async () => {
+            try {
+                const data = await getCredits(token);
+                setCredits(data.Credits);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message || 'ليس لديك الصلاحيات 😐');
+                setLoading(false);
+            }
+        };
         fetchCredits();
-    }, [token, fetchCredits]); // Add `fetchCredits` to the dependency array
-
-    useEffect(() => {
-        console.log("Credits state:", credits);
-    }, [credits]);
+    }, [token]);
 
     if (loading) {
         return (
@@ -63,39 +42,33 @@ const IncomingRequests = () => {
     }
 
     return (
-        <div className='cccccc'> 
+        <div className="credits-page cccccc">
             <Container className="credits-container">
                 <Row>
                     <Col>
-                        <h2 className="credits-title">الطلبات الواردة</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Table striped bordered hover responsive className="credits-table">
+                        <h2>قائمة الأرصدة</h2>
+                        <Table striped bordered hover>
                             <thead>
                                 <tr>
-                                    <th>اسم</th>
+                                    <th>#</th>
+                                    <th>الاسم</th>
                                     <th>السبب</th>
                                     <th>التخصيص</th>
-                                    <th>وقت الإنشاء</th>
+                                    <th>التاريخ</th>
+                                    <th>المستخدم</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {credits.length > 0 ? (
-                                    credits.map((credit) => (
-                                        <tr key={credit._id}>
-                                            <td>{credit.name}</td>
-                                            <td>{credit.reason}</td>
-                                            <td>{credit.allocation} ريال</td>
-                                            <td>{new Date(credit.createdAt).toLocaleString()}</td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="4" className="error-message">لا توجد أرصدة حالياً.</td>
+                                {credits.map((credit, index) => (
+                                    <tr key={credit._id}>
+                                        <td>{index + 1}</td>
+                                        <td>{credit.name}</td>
+                                        <td>{credit.reason}</td>
+                                        <td>{credit.allocation}</td>
+                                        <td>{new Date(credit.createdAt).toLocaleDateString()}</td>
+                                        <td>{credit.userId ? credit.userId.name : 'N/A'}</td>
                                     </tr>
-                                )}
+                                ))}
                             </tbody>
                         </Table>
                     </Col>

@@ -1,0 +1,63 @@
+General Container Styles .admin-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Button Custom Styling */
+
+.btn-custom {
+    background-color: #007bff;
+    color: white;
+    font-size: 20px;
+    /* Increased font size */
+    font-weight: 600;
+    padding: 25px;
+    /* Increased padding for taller buttons */
+    width: 100%;
+    /* Ensure the buttons take up full width of the column */
+    min-width: 300px;
+    /* Optional: Set a minimum width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+
+/* Column Styles */
+
+.col-6 {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 768px) {
+    .col-6 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}

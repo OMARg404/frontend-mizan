@@ -87,10 +87,10 @@ const Budget = () => {
             </div>
         );
     }
- 
+  
     return (
         <>
-            <div className='cc'> 
+            <div className='ooo'> 
                 <Container className="department-settings">
                     <Container className="digital-clock-container">
                         <Row>

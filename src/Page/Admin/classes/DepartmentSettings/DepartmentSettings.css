@@ -1,44 +1,237 @@
-/* Ensures no horizontal overflow */
+/* DigitalClock Container Styles */
 
-body,
-.department-settings {
-    overflow-x: hidden;
-    /* Prevent horizontal scroll */
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-
-.cccccc {
-    font-size: 1.5em;
-    margin-top: 50rem;
-}
-
-
-/* Styling for the container */
-
-.department-settings {
-    padding: 20px;
-    /* Adds padding inside the container */
-    max-width: 100%;
-    /* Ensures the container doesn't exceed the page width */
-    margin: 0 auto;
-    /* Centers the container */
-}
-
-
-/* Optional: Adjust the Card component for better fit */
-
-.card {
+.digital-clock-container {
     margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 2px solid #007bff; /* Blue border */
+    max-width: 100%; /* Ensure it stretches within its container */
+}
+
+.digital-clock-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 
-/* Ensure no overflow on small screens */
+/* Stat Cards */
+
+.stat-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h5 {
+    color: #007bff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.stat-card h3 {
+    color: #343a40;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.stat-card p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+
+/* Budget Table */
+
+.budget-table {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.budget-table th,
+.budget-table td {
+    padding: 18px 20px;
+    border: 1px solid #dcdfe1;
+    text-align: left;
+    color: #000;
+}
+
+.budget-table thead {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    font-weight: bold;
+}
+
+.budget-table tbody tr:hover {
+    background-color: #f1f1f1; /* Hover effect */
+    cursor: pointer;
+}
+
+.budget-table td {
+    color: #495057;
+}
+
+.budget-table tbody tr.no-data {
+    background-color: #f8d7da;
+    font-style: italic;
+    color: #721c24;
+}
+
+
+/* Add colors for the relation between 'المخصص' and 'المصروف' */
+
+.budget-table .highlight {
+    background-color: #ffecb3; /* Light yellow */
+}
+
+.budget-table .positive {
+    background-color: #d4edda; /* Greenish background for positive relation */
+}
+
+.budget-table .negative {
+    background-color: #f8d7da; /* Red for negative relation */
+}
+
+
+/* Action Buttons */
+
+.action-buttons {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.action-buttons .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-buttons .btn:hover {
+    background-color: #005f73;
+    transform: translateY(-2px);
+}
+
+.action-buttons .btn:focus {
+    outline: none;
+}
+
+.action-buttons .btn-success {
+    background-color: #28a745;
+}
+
+.action-buttons .btn-primary {
+    background-color: #007bff;
+}
+
+
+/* Responsive Design */
 
 @media (max-width: 767px) {
-    .department-settings .table-responsive {
-        overflow-x: unset;
-        /* Allow tables to adjust in smaller screens */
+    .budget-table th,
+    .budget-table td {
+        padding: 12px 15px;
+        font-size: 13px;
     }
+    .stat-card {
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+    .action-buttons .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Special Container Styles */
+
+.cccccc {
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.cccccc .department-settings {
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Success and Error Messages */
+
+.alert-success, .alert-danger {
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.alert-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.alert-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+/* New Allocation Input */
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Spinner Container */
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loading-container h4 {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #007bff;
+}
+
+/* Center the form and cards */
+.row {
+    justify-content: center;
+}
+
+/* Additional Styles for Buttons */
+.ml-2 {
+    margin-left: 10px;
+}
+
+.oo {
+    margin-top: 100rem;
 }

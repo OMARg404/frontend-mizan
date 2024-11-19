@@ -47,7 +47,7 @@ const UserPermissions = () => {
   };
 
   return (
-    <div className="user-permissions-container cccccc">
+    <div className="user-permissions-container re">
       <h2>صفحة صلاحيات المستخدمين</h2>
       {loading ? (
         // عرض رمز تحميل أثناء جلب البيانات

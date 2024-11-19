@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faHome, faMoneyBill, faCreditCard, faTachometerAlt, faEnvelopeOpenText,
+  faHome, faMoneyBill, faTachometerAlt, faEnvelopeOpenText,
   faFileAlt, faUserShield, faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 import './Navbar.css';
@@ -32,7 +32,6 @@ const CustomNavbar = () => {
             <Nav className="me-auto">
               <NavLinkItem to="/home" label="الصفحة الرئيسية" icon={faHome} />
               <NavLinkItem to="/budget" label="المزنيات" icon={faMoneyBill} />
-              <NavLinkItem to="/credits" label="الطلبات" icon={faCreditCard} />
               <NavLinkItem to="/incomingrequests" label="الطلبات الواردة" icon={faEnvelopeOpenText} />
               <NavLinkItem to="/dashboard" label="لوحة التحكم" icon={faTachometerAlt} />
               <NavLinkItem to="/reports" label="التقارير" icon={faFileAlt} />

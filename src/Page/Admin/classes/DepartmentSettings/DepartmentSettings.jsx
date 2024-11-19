@@ -90,7 +90,7 @@ const DepartmentSettings = () => {
     };
 
     return (
-        <div className="cccccc">
+        <div className="oo">
             <Container className="department-settings">
                 <Container className="digital-clock-container">
                     <Row>

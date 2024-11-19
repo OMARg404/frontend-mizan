@@ -1,6 +1,8 @@
 /* AdminSettings.css */
 
+
 /* Page Container */
+
 .admin-settings-page-container {
     max-width: 600px;
     margin: 0 auto;
@@ -8,52 +10,68 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Heading */
-  .admin-settings-page-container h2 {
+}
+
+
+/* Heading */
+
+.admin-settings-page-container h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  /* Form Styles */
-  form {
+}
+
+
+/* Form Styles */
+
+form {
     display: flex;
     flex-direction: column;
-  }
-  
-  /* Form Group (input containers) */
-  .form-group {
+}
+
+
+/* Form Group (input containers) */
+
+.form-group {
     margin-bottom: 15px;
-  }
-  
-  /* Label Styles */
-  .form-group label {
+}
+
+
+/* Label Styles */
+
+.form-group label {
     font-weight: bold;
     margin-bottom: 5px;
-    color: #555;
+    /* color: #555; */
     display: block;
-  }
-  
-  /* Input Styles */
-  .form-group input {
+}
+
+.ss {
+    color: #333;
+    margin-top: 10rem;
+}
+
+
+/* Input Styles */
+
+.form-group input {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
     width: 100%;
     box-sizing: border-box;
-    color: #333;
-  }
-  
-  .form-group input:focus {
+}
+
+.form-group input:focus {
     border-color: #007bff;
     outline: none;
-  }
-  
-  /* Submit Button */
-  button.btn {
+}
+
+
+/* Submit Button */
+
+button.btn {
     padding: 10px 15px;
     background-color: #007bff;
     color: white;
@@ -62,33 +80,34 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  button.btn:hover {
+}
+
+button.btn:hover {
     background-color: #0056b3;
-  }
-  
-  /* Button Disabled State */
-  button.btn:disabled {
+}
+
+
+/* Button Disabled State */
+
+button.btn:disabled {
     background-color: #d6d6d6;
     cursor: not-allowed;
-  }
-  
-  /* Responsive Design: Ensure the form works well on smaller screens */
-  @media (max-width: 600px) {
+}
+
+
+/* Responsive Design: Ensure the form works well on smaller screens */
+
+@media (max-width: 600px) {
     .admin-settings-page-container {
-      padding: 15px;
+        padding: 15px;
     }
-  
     .form-group input {
-      font-size: 14px;
+        font-size: 14px;
     }
-  
     button.btn {
-      font-size: 14px;
+        font-size: 14px;
     }
-  }
-  .cccccc {
-    font-size: 1.5em;
-    margin-top: 50rem;
-}    
+}
+
+
+/* Additional Custom Class */

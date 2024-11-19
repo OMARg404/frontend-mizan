@@ -4,31 +4,23 @@ body {
     font-family: 'Press Start 2P', cursive, 'GTAFont', sans-serif;
     margin: 0;
     padding: 0;
-    background: #f0f0f0;
-    /* Light grey background */
+    background: #ffffff;
     overflow-x: hidden;
     overflow-y: auto;
     min-height: 100vh;
-    color: #1c1c1c;
-    /* Dark text color */
     font-size: 16px;
 }
 
 html {
     padding-top: 5rem;
     background: #ffffff;
-    /* White background */
 }
 
 
 /* Navbar Styling */
 
-
-/* Ensure the navbar stays at the top and other content is not hidden */
-
 body {
     padding-top: 70px;
-    /* Adjust this value based on your navbar height */
 }
 
 
@@ -36,7 +28,6 @@ body {
 
 .content {
     padding-top: 150px;
-    /* Increased space below navbar */
     min-height: 100vh;
     padding-bottom: 20px;
     overflow-y: auto;
@@ -137,10 +128,6 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     border-radius: 5px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
 }
 
 .login-button:hover {
@@ -160,46 +147,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     border-radius: 5px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
 }
 
 .admin-login-button:hover {
     background-color: #e64a19;
     transform: translateY(-2px);
-}
-
-
-/* Button Styles */
-
-.btn,
-.button {
-    background-color: #007f91;
-    /* Blue button */
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, all 0.3s ease;
-    border-radius: 8px;
-    text-transform: uppercase;
-}
-
-.btn-lg {
-    font-size: 1.5rem;
-    padding: 15px 20px;
-}
-
-.btn-lg:hover,
-.btn:hover,
-.button:hover {
-    background-color: #005f73;
-    border: 2px solid #007f91;
-    color: #ffffff;
 }
 
 
@@ -212,20 +164,6 @@ body {
     text-align: center;
     font-size: 14px;
     color: #ffffff;
-}
-
-
-/* Header Styles */
-
-.header {
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #007f91;
-    text-shadow: 2px 2px 2px #000;
-    font-size: 48px;
-    font-weight: bold;
 }
 
 
@@ -245,29 +183,4 @@ body {
 
 .bg-light {
     background-color: #2c3e50;
-}
-
-
-/* Animation */
-
-@keyframes blink {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-}
-
-.blinking {
-    animation: blink 1s infinite;
-}
-
-@media (forced-colors: active) {
-    /* Your styles for forced colors */
-    body {
-        background-color: Window;
-        color: WindowText;
-    }
 }

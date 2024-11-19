@@ -1,5 +1,4 @@
 /* Global Styles */
-
 body {
     font-family: 'Press Start 2P', cursive, 'GTAFont', sans-serif;
     margin: 0;
@@ -9,27 +8,25 @@ body {
     overflow-y: auto;
     color: #1c1c1c;
     font-size: 16px;
-    /* Add padding to account for the navbar heights */
+    line-height: 1.6; /* Added to improve readability */
 }
 
 html {
     background: #ffffff;
 }
 
-
 /* Navbar Styling */
-
 .custom-navbar,
 .navbar {
-    background: linear-gradient(90deg, #005f73, #0a9396);
+    background: linear-gradient(90deg, #090909, rgba(30, 136, 229, 0.7));
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    padding: 0;
+    padding: 0 20px; /* Added some padding to the navbar */
     transition: all 0.3s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid #007f91;
+    border-bottom: 3px solid #161616;
     position: fixed;
     width: 100%;
     top: 0;
@@ -74,7 +71,7 @@ html {
 }
 
 .navbar-toggler {
-    border-color: #005f73;
+    border-color: #cfeca6;
 }
 
 .navbar-collapse {
@@ -82,6 +79,7 @@ html {
     padding-top: 10px;
 }
 
+/* Responsive Navbar */
 @media (max-width: 767px) {
     .navbar-nav {
         text-align: center;
@@ -95,22 +93,18 @@ html {
     }
 }
 
-
 /* Content Styles */
-
 .content {
-    padding-top: 80px;
+    padding-top: 80px; /* Increased padding to account for fixed navbar */
     min-height: 100vh;
     padding-bottom: 20px;
     overflow-y: auto;
 }
 
-
 /* Notification Styles */
-
 .notification-tab {
     position: fixed;
-    top: 80px;
+    top: 80px; /* Adjusted for fixed navbar */
     right: 20px;
     background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -118,6 +112,14 @@ html {
     width: 300px;
     z-index: 20;
     padding: 15px;
+    transition: all 0.3s ease-in-out;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Ensure it's hidden by default */
+}
+
+.notification-tab.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .notification-header {
@@ -138,10 +140,15 @@ html {
 .notification-list li {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
 }
 
 .notification-list li:last-child {
     border-bottom: none;
+}
+
+.notification-list li:hover {
+    background-color: #f1f1f1; /* Highlight on hover */
 }
 
 .close-btn {
@@ -150,4 +157,26 @@ html {
     font-size: 1.2rem;
     cursor: pointer;
     color: #333;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e64a19; /* Red color on hover for close button */
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.bg-dark {
+    background-color: #1c1c1c;
+}
+
+.bg-light {
+    background-color: #f0f0f0;
 }

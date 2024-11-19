@@ -44,12 +44,12 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="admin-settings-page-container cccccc">
-      <h2>Add New Budget</h2>
+    <div className="admin-settings-page-container ss">
+      <h2>إضافة ميزانية جديدة</h2>
 
       <form onSubmit={handleAddBudget}>
         <div className="form-group">
-          <label htmlFor="budgetName">Budget Name:</label>
+          <label htmlFor="budgetName">اسم الميزانية:</label>
           <input
             type="text"
             id="budgetName"
@@ -60,7 +60,7 @@ const AdminSettings = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="budgetDesc">Description:</label>
+          <label htmlFor="budgetDesc">الوصف:</label>
           <input
             type="text"
             id="budgetDesc"
@@ -71,7 +71,7 @@ const AdminSettings = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="budgetAllocation">Allocation:</label>
+          <label htmlFor="budgetAllocation">التخصيص:</label>
           <input
             type="number"
             id="budgetAllocation"
@@ -81,7 +81,7 @@ const AdminSettings = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Add Budget</button>
+        <button type="submit" className="btn btn-primary">إضافة الميزانية</button>
       </form>
     </div>
   );

@@ -93,10 +93,10 @@ const CreateUserPage = () => {
     try {
       const response = await createUser(userData, token);
       setSuccess(true);
-      console.log('User created:', response);
+      console.log('تم إنشاء المستخدم:', response);
     } catch (err) {
-      setError('Failed to create user');
-      console.error('Error creating user:', err);
+      setError('فشل في إنشاء المستخدم');
+      console.error('خطأ في إنشاء المستخدم:', err);
     } finally {
       setLoading(false);
     }
@@ -104,17 +104,17 @@ const CreateUserPage = () => {
 
   return (
     <div className="create-user-page cccccc">
-      <h2>Create New User</h2>
+      <h2>إنشاء مستخدم جديد</h2>
 
-      {success && <Alert variant="success">User created successfully!</Alert>}
+      {success && <Alert variant="success">تم إنشاء المستخدم بنجاح!</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formName">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>الاسم</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter name"
+            placeholder="أدخل الاسم"
             name="name"
             value={userData.name}
             onChange={handleChange}
@@ -122,10 +122,10 @@ const CreateUserPage = () => {
         </Form.Group>
 
         <Form.Group controlId="formEmail">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>البريد الإلكتروني</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter email"
+            placeholder="أدخل البريد الإلكتروني"
             name="email"
             value={userData.email}
             onChange={handleChange}
@@ -133,10 +133,10 @@ const CreateUserPage = () => {
         </Form.Group>
 
         <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>كلمة المرور</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter password"
+            placeholder="أدخل كلمة المرور"
             name="password"
             value={userData.password}
             onChange={handleChange}
@@ -144,20 +144,20 @@ const CreateUserPage = () => {
         </Form.Group>
 
         <Form.Group controlId="formRole">
-          <Form.Label>Role</Form.Label>
+          <Form.Label>الدور</Form.Label>
           <Form.Control
             as="select"
             name="role"
             value={userData.role}
             onChange={handleChange}
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option value="user">مستخدم</option>
+            <option value="admin">مدير</option>
           </Form.Control>
         </Form.Group>
 
         <Form.Group controlId="formBudget">
-          <Form.Label>Budget</Form.Label>
+          <Form.Label>الميزانية</Form.Label>
           {budgetOptions.map((budget) => (
             <Form.Check
               key={budget._id}
@@ -174,14 +174,14 @@ const CreateUserPage = () => {
         {userData.budgets.length > 0 && userData.budgets.map((budget) => {
           return (
             <Form.Group controlId={`formPermission-${budget.budgetId}`} key={budget.budgetId}>
-              <Form.Label>Permission for {budget.name}</Form.Label>
+              <Form.Label>صلاحيات لـ {budget.name}</Form.Label>
               <Form.Control
                 as="select"
                 value={budget.permission} // Default to 'edit'
                 onChange={(e) => handlePermissionChange(e, budget.budgetId)}
               >
-                <option value="edit">Edit</option>
-                <option value="view">View</option>
+                <option value="edit">تعديل</option>
+                <option value="view">عرض</option>
               </Form.Control>
             </Form.Group>
           );
@@ -191,10 +191,10 @@ const CreateUserPage = () => {
           {loading ? (
             <>
               <Spinner animation="border" size="sm" />
-              Creating...
+              جاري الإنشاء...
             </>
           ) : (
-            'Create User'
+            'إنشاء مستخدم'
           )}
         </Button>
       </Form>

@@ -11,6 +11,7 @@
     margin: 30px auto;
     width: 90%;
     max-width: 900px;
+    color: #1c1c1c;
 }
 
 
@@ -81,8 +82,8 @@
     border-radius: 5px;
     font-size: 1rem;
     font-family: 'Press Start 2P', cursive;
-    background-color: #7c848b;
-    color: white;
+    background-color: #d4d5d5;
+    color: rgb(47, 47, 47);
 }
 
 .credits-container form textarea {
@@ -142,4 +143,9 @@
     /* Add a border to make it stand out */
     background-color: #ffe6e6;
     /* Optional: Add a light red background */
+}
+
+.bbb {
+    font-size: 1.5em;
+    margin-top: 30rem;
 }
