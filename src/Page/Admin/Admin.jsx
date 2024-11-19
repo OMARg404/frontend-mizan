@@ -19,7 +19,7 @@ const Admin = () => {
             className="btn btn-primary btn-lg w-100"
             onClick={() => handleButtonClick('/admin/settings/admins')}
           >
-          أعدادات الأدارين
+   أضافة ميزانية جديدة
           </button>
         </div>
         <div className="col-6 mb-4">
@@ -34,8 +34,7 @@ const Admin = () => {
           <button 
             className="btn btn-primary btn-lg w-100"
             onClick={() => handleButtonClick('/admin/settings/organizational-structure')}
-          >
-        أعدادات الهيكل التنظيمي
+          >اضافة مستخدم جديد
           </button>
         </div>
         <div className="col-6 mb-4">

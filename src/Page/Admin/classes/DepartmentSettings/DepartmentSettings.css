@@ -1,139 +1,44 @@
-/* DepartmentSettings Container Styles */
+/* Ensures no horizontal overflow */
+
+body,
+.department-settings {
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.cccccc {
+    font-size: 1.5em;
+    margin-top: 50rem;
+}
+
+
+/* Styling for the container */
 
 .department-settings {
-    margin-top: 30px;
     padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.department-settings:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Adds padding inside the container */
+    max-width: 100%;
+    /* Ensures the container doesn't exceed the page width */
+    margin: 0 auto;
+    /* Centers the container */
 }
 
 
-/* Page Title */
-
-.page-title {
-    font-size: 2rem;
-    color: #343a40;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-
-/* Intro Section */
-
-.intro-section {
-    background-color: #e9ecef;
-    padding: 20px;
-    border-radius: 10px;
-    transition: padding 0.3s ease;
-}
-
-.intro-section:hover {
-    padding: 25px;
-}
-
-.intro-section p {
-    font-size: 1.2rem;
-    color: #6c757d;
-}
-
-
-/* Card Styles */
+/* Optional: Adjust the Card component for better fit */
 
 .card {
-    border: none;
-    border-radius: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.card-body {
-    text-align: center;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    color: #007bff;
-}
-
-.card-text {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-
-/* Create Unit Form */
-
-.create-unit-form {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.create-unit-form .form-group {
     margin-bottom: 20px;
 }
 
-.create-unit-form .btn {
-    font-size: 1.1rem;
-    padding: 12px;
-}
 
+/* Ensure no overflow on small screens */
 
-/* Responsive Design for Smaller Screens */
-
-@media (max-width: 768px) {
-    .page-title {
-        font-size: 1.8rem;
+@media (max-width: 767px) {
+    .department-settings .table-responsive {
+        overflow-x: unset;
+        /* Allow tables to adjust in smaller screens */
     }
-    .intro-section {
-        padding: 15px;
-    }
-    .create-unit-form {
-        padding: 15px;
-    }
-    .department-settings {
-        padding: 15px;
-    }
-    .card-body {
-        text-align: left;
-    }
-}
-
-.budget-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.budget-table th,
-.budget-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.budget-table th {
-    background-color: #007bff;
-    color: white;
-}
-
-.budget-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.cccc {
-    margin-top: 40rem;
 }

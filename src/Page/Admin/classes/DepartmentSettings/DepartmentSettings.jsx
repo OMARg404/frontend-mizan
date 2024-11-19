@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row, Col, Card, Table, Button, ProgressBar, Spinner, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Table, Button, Spinner, Form, Alert, ProgressBar } from 'react-bootstrap';
 import { AuthContext } from '../../../../context/AuthContext';
-import { getBudgets, addBudget, updateAdminBudget } from '../../../../services/api';
-import DigitalClock from '../../../../components/Navbar/DigitalClock';
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
+import { getBudgets, updateAdminBudget, deleteBudget } from '../../../../services/api';
+import DigitalClock from '../../../../components/Navbar/DigitalClock'; // Import DigitalClock component
 import './DepartmentSettings.css';
 
 const DepartmentSettings = () => {
@@ -12,12 +10,11 @@ const DepartmentSettings = () => {
     const [budgets, setBudgets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [spentAmount, setSpentAmount] = useState(0);
-    const [unitId, setUnitId] = useState("");
-    const [description, setDescription] = useState("");
-    const [editMode, setEditMode] = useState(false);
     const [selectedBudget, setSelectedBudget] = useState(null);
+    const [newAllocation, setNewAllocation] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
+    // Fetch budgets when component mounts
     useEffect(() => {
         const fetchData = async () => {
             if (!token) {
@@ -28,12 +25,15 @@ const DepartmentSettings = () => {
 
             try {
                 const response = await getBudgets(token);
+                console.log('تم جلب بيانات الميزانية:', response); // Log the fetched data for debugging
+
                 if (response && Array.isArray(response.Budgets)) {
-                    setBudgets(response.Budgets);
+                    setBudgets(response.Budgets); // Set only the Budgets array
                 } else {
                     setError('تم استلام بيانات غير صالحة من الخادم');
                 }
             } catch (error) {
+                console.error('خطأ في جلب البيانات:', error);
                 if (error.response && error.response.status === 401) {
                     setError('التوكن منتهي الصلاحية أو غير صالح، يرجى تسجيل الدخول مرة أخرى');
                     logout();
@@ -48,85 +48,54 @@ const DepartmentSettings = () => {
         fetchData();
     }, [token, logout]);
 
-    // Update Budget handler
+    // Handle selection of a budget to update
+    const handleBudgetSelection = (budget) => {
+        setSelectedBudget(budget);
+        setNewAllocation(budget.allocation);
+    };
+
+    // Handle the update of the selected budget
     const handleUpdateBudget = async () => {
-        if (spentAmount <= 0 || !selectedBudget) {
-            alert("يرجى إدخال قيمة صالحة للمبلغ");
-            return;
-        }
-        try {
-            const updatedBudgetData = {
-                amount: spentAmount,
-            };
+        if (!selectedBudget || newAllocation === selectedBudget.allocation) return;
 
-            const updatedBudget = await updateAdminBudget(selectedBudget._id, updatedBudgetData, token);
-            setEditMode(false);
-            setBudgets(budgets.map(budget => 
-                budget._id === selectedBudget._id ? { ...budget, allocation: spentAmount } : budget
+        try {
+            const response = await updateAdminBudget(selectedBudget._id, newAllocation, token);
+            console.log('تم تحديث الميزانية:', response);
+            setBudgets(budgets.map(budget =>
+                budget._id === selectedBudget._id ? { ...budget, allocation: newAllocation } : budget
             ));
+            setSuccessMessage('تم تحديث الميزانية بنجاح');
             setSelectedBudget(null);
-        } catch (error) {
-            console.error('Error updating budget:', error);
+            setNewAllocation('');
+        } catch (err) {
+            setError('فشل في تحديث الميزانية');
+            console.error(err);
         }
     };
 
-    // Add Budget handler
-    const handleAddBudget = async () => {
-        if (spentAmount <= 0 || !unitId || !description) {
-            alert("يرجى ملء جميع الحقول بشكل صحيح");
-            return;
-        }
+    // Handle the deletion of a budget
+    const handleDeleteBudget = async (budgetId) => {
+        const confirmDelete = window.confirm("هل أنت متأكد أنك تريد حذف هذه الميزانية؟");
+        if (!confirmDelete) return;
+
         try {
-            const budgetData = {
-                amount: spentAmount,
-                unitId,
-                description
-            };
-
-            const newBudget = await addBudget(budgetData, token);
-            setBudgets([...budgets, newBudget]);
-            setSpentAmount(0);
-            setUnitId("");
-            setDescription("");
-        } catch (error) {
-            console.error('Error adding budget:', error);
+            const response = await deleteBudget(budgetId, token);
+            console.log('تم حذف الميزانية:', response);
+            setBudgets(budgets.filter(budget => budget._id !== budgetId)); // Remove deleted budget from state
+            setSuccessMessage('تم حذف الميزانية بنجاح');
+        } catch (err) {
+            setError('فشل في حذف الميزانية');
+            console.error(err);
         }
     };
-
-    // Excel download handler
-    const downloadExcel = () => {
-        const ws = XLSX.utils.json_to_sheet(budgets);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'الميزانيات');
-        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const file = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(file, 'budgets.xlsx');
-    };
-
-    if (loading) {
-        return (
-            <div className="loading-container">
-                <Spinner animation="border" variant="primary" size="lg" />
-                <h4>جاري تحميل البيانات...</h4>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="error-container">
-                <h4>{error}</h4>
-            </div>
-        );
-    }
 
     return (
-        <div className="department-settings cccc">
-            <Container>
+        <div className="cccccc">
+            <Container className="department-settings">
                 <Container className="digital-clock-container">
                     <Row>
                         <Col>
-                            <DigitalClock />
+                            <DigitalClock /> {/* DigitalClock component */}
                         </Col>
                     </Row>
                 </Container>
@@ -134,119 +103,119 @@ const DepartmentSettings = () => {
                     <Col>
                         <Card>
                             <Card.Header>
-                                <h3>إعدادات الإدارة</h3>
+                                <h3>إعدادات الأقسام</h3>
                             </Card.Header>
                             <Card.Body>
-                                <Table striped bordered hover responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>المبلغ المصروف</th>
-                                            <th>المبلغ المخصص</th>
-                                            <th>اسم الوحدة</th>
-                                            <th>الوصف</th>
-                                            <th>الإجراءات</th>
-                                            <th>العلاقة بين المصروف والمخصص</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {budgets.length === 0 ? (
-                                            <tr>
-                                                <td colSpan="6">لا توجد بيانات الميزانية</td>
-                                            </tr>
-                                        ) : (
-                                            budgets.map((budget) => {
-                                                const allocation = budget.allocation || 0;
-                                                const expenses = budget.expenses || 0;
-                                                const percentage = allocation > 0 ? (expenses / allocation) * 100 : 0;
-
-                                                return (
-                                                    <tr key={budget._id}>
-                                                        <td>{budget.expenses}</td>
-                                                        <td>{budget.allocation}</td>
-                                                        <td>{budget.name}</td>
-                                                        <td>{budget.desc}</td>
-                                                        <td>
-                                                            <Button
-                                                                variant="warning"
-                                                                onClick={() => {
-                                                                    setEditMode(true);
-                                                                    setSelectedBudget(budget);
-                                                                    setUnitId(budget.unitId);
-                                                                    setSpentAmount(budget.allocation); 
-                                                                    setDescription(budget.desc);
-                                                                }}
-                                                                className="me-2"
-                                                            >
-                                                                تعديل المخصص
-                                                            </Button>
-                                                        </td>
-                                                        <td>
-                                                            <ProgressBar
-                                                                now={percentage}
-                                                                label={`${percentage.toFixed(2)}%`}
-                                                                variant={percentage >= 100 ? 'danger' : 'success'}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })
-                                        )}
-                                    </tbody>
-                                </Table>
-                                {editMode && (
-                                    <Form>
-                                        <h4>تعديل المخصص</h4>
-                                        <Form.Group controlId="spentAmount">
-                                            <Form.Label>المبلغ المخصص</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="أدخل المبلغ المنفق"
-                                                value={spentAmount}
-                                                onChange={(e) => setSpentAmount(e.target.value)}
-                                            />
-                                        </Form.Group>
-                                        <Button variant="primary" onClick={handleUpdateBudget}>حفظ التعديل</Button>
-                                    </Form>
+                                {/* Success Message */}
+                                {successMessage && (
+                                    <Alert variant="success">
+                                        {successMessage}
+                                    </Alert>
                                 )}
 
-                                <Form>
-                                    <h4>إضافة مصروف</h4>
-                                    <Form.Group controlId="unitId">
-                                        <Form.Label>اختيار الوحدة</Form.Label>
-                                        <Form.Control
-                                            as="select"
-                                            value={unitId}
-                                            onChange={(e) => setUnitId(e.target.value)}
-                                        >
-                                            {/* Add unit options here */}
-                                        </Form.Control>
-                                    </Form.Group>
-                                    <Form.Group controlId="description">
-                                        <Form.Label>الوصف</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="أدخل الوصف"
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group controlId="spentAmount">
-                                        <Form.Label>المبلغ المصروف</Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            placeholder="أدخل المبلغ المصروف"
-                                            value={spentAmount}
-                                            onChange={(e) => setSpentAmount(e.target.value)}
-                                        />
-                                    </Form.Group>
-                                    <Button variant="primary" onClick={handleAddBudget}>إضافة المصروف</Button>
-                                </Form>
+                                {/* Error Message */}
+                                {error && (
+                                    <Alert variant="danger">
+                                        {error}
+                                    </Alert>
+                                )}
 
-                                <Button variant="secondary" onClick={downloadExcel}>تنزيل الإكسل</Button>
+                                {loading ? (
+                                    <div className="loading-container">
+                                        <Spinner animation="border" variant="primary" size="lg" />
+                                        <h4>جاري تحميل البيانات...</h4>
+                                    </div>
+                                ) : (
+                                    <Table striped bordered hover responsive className="budget-table">
+                                        <thead>
+                                            <tr>
+                                                <th>الاسم</th>
+                                                <th>الوصف</th>
+                                                <th>الميزانية المخصصة</th>
+                                                <th>العلاقة بين المصروف والمخصص</th>
+                                                <th>الإجراءات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {budgets.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="5">لا توجد بيانات الميزانية</td>
+                                                </tr>
+                                            ) : (
+                                                budgets.map((budget) => {
+                                                    const allocation = budget.allocation || 0;
+                                                    const expenses = budget.expenses || 0;
+                                                    const percentage = allocation > 0 ? (expenses / allocation) * 100 : 0;
+
+                                                    return (
+                                                        <tr key={budget._id}>
+                                                            <td>{budget.name}</td>
+                                                            <td>{budget.desc}</td>
+                                                            <td>{budget.allocation}</td>
+                                                            <td>
+                                                                <ProgressBar 
+                                                                    now={percentage} 
+                                                                    label={`${percentage.toFixed(2)}%`} 
+                                                                    variant={percentage >= 100 ? 'danger' : 'success'}
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <Button
+                                                                    variant="primary"
+                                                                    onClick={() => handleBudgetSelection(budget)}
+                                                                >
+                                                                    تعديل
+                                                                </Button>
+                                                                <Button
+                                                                    variant="danger"
+                                                                    onClick={() => handleDeleteBudget(budget._id)}
+                                                                    className="ml-2"
+                                                                >
+                                                                    حذف
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            )}
+                                        </tbody>
+                                    </Table>
+                                )}
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
+
+                {/* Edit Budget Section */}
+                {selectedBudget && (
+                    <Row>
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <h4>تعديل الميزانية: {selectedBudget.name}</h4>
+                                    <Form>
+                                        <Form.Group controlId="allocation">
+                                            <Form.Label>الميزانية المخصصة الجديدة</Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                value={newAllocation}
+                                                onChange={(e) => setNewAllocation(e.target.value)}
+                                                placeholder="أدخل الميزانية الجديدة"
+                                            />
+                                        </Form.Group>
+                                        <Button
+                                            variant="success"
+                                            onClick={handleUpdateBudget}
+                                            disabled={!newAllocation || newAllocation === selectedBudget.allocation}
+                                        >
+                                            حفظ التعديلات
+                                        </Button>
+                                    </Form>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                )}
             </Container>
         </div>
     );

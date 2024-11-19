@@ -1,129 +1,88 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { createUser, getBudgets, getCredits } from '../../../../services/api';
+import React, { useState, useContext } from 'react';
+import { addBudget } from '../../../../services/api'; // Assuming you have this API function defined
 import { AuthContext } from '../../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './AdminSettings.css';
 
 const AdminSettings = () => {
-  const { user, token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);  // Destructure token from AuthContext
   const navigate = useNavigate();
-  
-  // State variables
-  const [admins, setAdmins] = useState([]);
-  const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Log token to check if it's valid
-  console.log('Token:', token);
+  // State variables for form data
+  const [budgetName, setBudgetName] = useState('');
+  const [budgetDesc, setBudgetDesc] = useState('');
+  const [budgetAllocation, setBudgetAllocation] = useState('');
 
-  // Fetch admins from the API
-  useEffect(() => {
-    const fetchAdmins = async () => {
-      try {
-        console.log('جاري جلب المدراء...');
-        const response = await getBudgets(token); // Assuming getBudgets fetches admin data, update if incorrect
-        console.log('المدراء:', response); // Log the response
-        setAdmins(response);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message || 'فشل في جلب المدراء');
-        setLoading(false);
-      }
+  // Handler for form submission
+  const handleAddBudget = async (e) => {
+    e.preventDefault();
+
+    // Create the budget data object
+    const budgetData = {
+      name: budgetName,
+      desc: budgetDesc,
+      allocation: budgetAllocation,
     };
 
-    if (token) {
-      fetchAdmins(); // Only fetch if token exists
-    } else {
-      navigate('/admin'); // Redirect to login if no token
-    }
-  }, [token, navigate]);
-
-  // Handle creating a new admin
-  const handleCreateAdmin = async () => {
     try {
-      const newAdminData = {
-        name: newAdmin.name,
-        email: newAdmin.email,
-        password: newAdmin.password,
-      };
-      const response = await createUser(newAdminData, token); // Assuming createUser creates a new admin, update if incorrect
-      setAdmins([...admins, response]);
-      setNewAdmin({ name: '', email: '', password: '' });
-      alert('تم إنشاء المدير بنجاح');
-    } catch (err) {
-      setError(err.message || 'فشل في إنشاء المدير');
+      // Call addBudget function from API
+      const result = await addBudget(budgetData, token);
+      
+      // Optionally, navigate after successful submission (e.g., to a budget list page)
+      navigate('/budget');  // Adjust the path as needed
+
+      // Optionally, clear form after submission
+      setBudgetName('');
+      setBudgetDesc('');
+      setBudgetAllocation('');
+      
+      console.log("Budget added:", result);
+    } catch (error) {
+      console.error("Failed to add budget:", error);
+      // Handle error appropriately (e.g., show error message)
     }
   };
 
-  // Handle loading and error states
-  if (loading) {
-    return <div>جاري التحميل...</div>;
-  }
-
-  if (error) {
-    return <div>خطأ: {error}</div>;
-  }
-
   return (
-    <div className="admin-settings-page-container">
-      <div className="container-fluid">
-        <h1 className="text-center my-4">إعدادات المدير</h1>
-        <p className="text-center">
-          هذه هي صفحة إعدادات المدير حيث يمكنك إدارة ميزات النظام الإدارية.
-        </p>
+    <div className="admin-settings-page-container cccccc">
+      <h2>Add New Budget</h2>
 
-        {/* Create New Admin Form */}
-        <div className="create-admin-form">
-          <h4>إنشاء مدير جديد</h4>
+      <form onSubmit={handleAddBudget}>
+        <div className="form-group">
+          <label htmlFor="budgetName">Budget Name:</label>
           <input
             type="text"
-            placeholder="اسم المدير"
-            value={newAdmin.name}
-            onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+            id="budgetName"
+            value={budgetName}
+            onChange={(e) => setBudgetName(e.target.value)}
+            required
           />
-          <input
-            type="email"
-            placeholder="البريد الإلكتروني للمدير"
-            value={newAdmin.email}
-            onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
-          />
-          <input
-            type="password"
-            placeholder="كلمة مرور المدير"
-            value={newAdmin.password}
-            onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
-          />
-          <button className="btn btn-success" onClick={handleCreateAdmin}>إنشاء مدير</button>
         </div>
 
-        {/* List of Admins */}
-        <div className="admin-list">
-          <h4>كل المدراء</h4>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>الاسم</th>
-                <th>البريد الإلكتروني</th>
-              </tr>
-            </thead>
-            <tbody>
-              {admins.length === 0 ? (
-                <tr>
-                  <td colSpan="2">لم يتم العثور على مدراء</td>
-                </tr>
-              ) : (
-                admins.map((admin) => (
-                  <tr key={admin.id}>
-                    <td>{admin.name}</td>
-                    <td>{admin.email}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+        <div className="form-group">
+          <label htmlFor="budgetDesc">Description:</label>
+          <input
+            type="text"
+            id="budgetDesc"
+            value={budgetDesc}
+            onChange={(e) => setBudgetDesc(e.target.value)}
+            required
+          />
         </div>
-      </div>
+
+        <div className="form-group">
+          <label htmlFor="budgetAllocation">Allocation:</label>
+          <input
+            type="number"
+            id="budgetAllocation"
+            value={budgetAllocation}
+            onChange={(e) => setBudgetAllocation(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary">Add Budget</button>
+      </form>
     </div>
   );
 };

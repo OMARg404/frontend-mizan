@@ -1,0 +1,74 @@
+.create-user-page {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #565050;
+  }
+  
+  .create-user-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .create-user-page .alert {
+    margin-bottom: 20px;
+  }
+  
+  .create-user-page .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .create-user-page .form-label {
+    font-weight: bold;
+  }
+  
+  .create-user-page .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+  }
+  
+  .create-user-page .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+  }
+  
+  .create-user-page .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .create-user-page .btn:disabled {
+    background-color: #c0c0c0;
+    cursor: not-allowed;
+  }
+  
+  .create-user-page .spinner-border {
+    margin-right: 10px;
+  }
+  
+  .create-user-page .form-group select {
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+  }
+  
+  .create-user-page .form-control[type="text"],
+  .create-user-page .form-control[type="email"],
+  .create-user-page .form-control[type="password"] {
+    height: 40px;
+  }
+  
+  .create-user-page .form-control::placeholder {
+    color: #aaa;
+  }
+  .cccccc {
+    font-size: 1.5em;
+    margin-top: 50rem;
+}  

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './DigitalClock.css';
 
 const DigitalClock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -20,9 +21,9 @@ const DigitalClock = () => {
   };
 
   return (
-    <div>
-      <div>{formatDate(currentTime)}</div>
-      <div>{formatTime(currentTime)}</div>
+    <div className="digital-clock">
+      <div className="date">{formatDate(currentTime)}</div>
+      <div className="time">{formatTime(currentTime)}</div>
     </div>
   );
 };
