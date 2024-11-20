@@ -1,5 +1,6 @@
+// src/components/UserSettings/UserSettings.jsx
 import React, { useState, useEffect } from 'react';
-import { deleteUser, getUsers } from '../../../../services/api';
+import { deleteUser, getUsers } from '../../../../services/api'; // Make sure these functions are correctly imported
 import { Button, Card, ListGroup, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './UserSettings.css';
@@ -7,28 +8,28 @@ import './UserSettings.css';
 const UserSettings = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  // Added error state
+  const [error, setError] = useState(null); // Added error state
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem('jwtToken');
       if (!token) {
-        navigate('/');
+        navigate('/'); // Redirect to login if no token
         return;
       }
 
       try {
         const response = await getUsers(token);
         if (response && Array.isArray(response.users)) {
-          setUsers(response.users);
+          setUsers(response.users); // Set the users state
         } else {
           setError('Expected users array, but got something else');
-          setUsers([]);  // Reset the users list in case of error
+          setUsers([]); // Reset the users list in case of error
         }
       } catch (error) {
         setError('Failed to fetch users');
-        setUsers([]);  // Reset the users list in case of error
+        setUsers([]); // Reset the users list in case of error
       } finally {
         setLoading(false);
       }

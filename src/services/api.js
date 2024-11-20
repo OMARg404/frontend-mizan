@@ -37,7 +37,7 @@ export const loginUser = async(email, password) => {
 
 export const getUsers = async(token) => {
     try {
-        const response = await axios.get(`${baseUrl}/user`, {
+        const response = await axios.get(`${baseUrl}/users`, {
             headers: { token }
         });
         return response.data;
@@ -47,16 +47,25 @@ export const getUsers = async(token) => {
     }
 };
 // المفروض بالتوكن بس هجيب ال id منين
-export const getUser = async(userId, token) => {
+// export const getUser = async(token) => {
+//     try {
+//         const response = await axios.get(`${baseUrl}/user`, { headers: { token } });
+//         return response.data;
+//     } catch (error) {
+//         console.error("Get user failed:", error);
+//         throw error.response ? error.response.data : new Error('Get user failed');
+//     }
+// };
+export const getUser = async(token) => {
     try {
-        const response = await axios.get(`${baseUrl}/user/${userId}`, { headers: { token } });
+        const response = await axios.get('http://localhost:3000/api/v1/user', {
+            headers: { token }
+        });
         return response.data;
     } catch (error) {
-        console.error("Get user failed:", error);
-        throw error.response ? error.response.data : new Error('Get user failed');
+        throw new Error('Failed to fetch user data');
     }
 };
-
 export const updateUser = async(userId, userData, token) => {
     try {
         const response = await axios.put(`${baseUrl}/user/${userId}`, userData, { headers: { token } });
@@ -67,10 +76,21 @@ export const updateUser = async(userId, userData, token) => {
     }
 };
 // دي بتمسح اليوزر نفسه 
+// export const deleteUser = async(userId, token) => {
+//     try {
+//         const response = await axios.delete(`${baseUrl}/user/${userId}`, { headers: { token } });
+//         return response.data;
+//     } catch (error) {
+//         console.error("Delete user failed:", error);
+//         throw error.response ? error.response.data : new Error('Delete user failed');
+//     }
+// };
 export const deleteUser = async(userId, token) => {
     try {
-        const response = await axios.delete(`${baseUrl}/user/${userId}`, { headers: { token } });
-        return response.data;
+        const response = await axios.delete(`${baseUrl}/user/${userId}`, {
+            headers: { token },
+        });
+        return response.data; // Ensure the API returns an object with a `success` field or other relevant info
     } catch (error) {
         console.error("Delete user failed:", error);
         throw error.response ? error.response.data : new Error('Delete user failed');
@@ -93,19 +113,23 @@ export const addBudget = async(budgetData, token) => {
 };
 
 
-export const updateUserBudget = async(budgetId, expenses, token) => {
+export const updateBudget = async(budgetId, expenses, token) => {
     try {
-        const response = await axios.post(`${baseUrl}/budget/admin/${budgetId}`, { expenses }, { headers: { token } });
+        const response = await axios.post(
+            `http://localhost:3000/api/v1/budget/user/${budgetId}`, { expenses }, {
+                headers: { token },
+            }
+        );
         return response.data;
     } catch (error) {
-        console.error("Update user budget failed:", error);
-        throw error.response ? error.response.data : new Error('Update user budget failed');
+        console.error('Update user budget failed:', error);
+        throw error;
     }
 };
 
 export const updateAdminBudget = async(budgetId, allocation, token) => {
     try {
-        const response = await axios.put(
+        const response = await axios.post(
             `${baseUrl}/budget/admin/${budgetId}`, { allocation: allocation }, // Correct key name is `allocation`
             { headers: { token } }
         );
@@ -147,20 +171,24 @@ export const getCredits = async(token) => {
         throw error.response ? error.response.data : new Error('Get credits failed');
     }
 };
-
-export const addCredit = async(creditData, token) => {
+// export const addCredit = async(userId, creditData, token) => {
+//     try {
+//         const response = await axios.post(`http://localhost:3000/api/v1/credits/${userId}`, creditData, {
+//             headers: { token }
+//         });
+//         return response.data;
+//     } catch (error) {
+//         throw error;
+//     }
+// };
+export const addCredit = async(userId, budgetId, creditData, token) => {
     try {
-        const response = await axios.post(`${baseUrl}/credits`, creditData, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Use Bearer token for authorization
-                'Content-Type': 'application/json' // Ensure the content type is JSON
-            }
+        const response = await axios.post(`http://localhost:3000/api/v1/credits/${budgetId}`, creditData, {
+            headers: { token }
         });
         return response.data;
     } catch (error) {
-        console.error("Add credit failed:", error);
-        // Throw a more detailed error message if available
-        throw error.response ? error.response.data : new Error('Add credit failed');
+        throw error;
     }
 };
 

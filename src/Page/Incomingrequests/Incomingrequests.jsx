@@ -14,6 +14,7 @@ const IncomingRequests = () => {
         const fetchCredits = async () => {
             try {
                 const data = await getCredits(token);
+                console.log(data);
                 setCredits(data.Credits);
                 setLoading(false);
             } catch (err) {
@@ -46,7 +47,7 @@ const IncomingRequests = () => {
             <Container className="credits-container">
                 <Row>
                     <Col>
-                        <h2>قائمة الأرصدة</h2>
+                      <h2>قائمة الطلابات</h2>
                         <Table striped bordered hover>
                             <thead>
                                 <tr>
