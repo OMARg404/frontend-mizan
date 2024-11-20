@@ -169,7 +169,7 @@ const UpdateBudgetPage = () => {
                                             <input
                                                 type="text"
                                                 name="name"
-                                                placeholder="اسم المزانية"
+                                                placeholder="عنوان الطلب او الخبر"
                                                 value={creditData.name}
                                                 onChange={handleCreditChange}
                                             />

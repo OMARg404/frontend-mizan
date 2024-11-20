@@ -1,6 +1,5 @@
-// src/components/UserSettings/UserSettings.jsx
 import React, { useState, useEffect } from 'react';
-import { deleteUser, getUsers } from '../../../../services/api'; // Make sure these functions are correctly imported
+import { deleteUser, getUsers } from '../../../../services/api'; // Ensure these functions are correctly imported
 import { Button, Card, ListGroup, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './UserSettings.css';
@@ -9,6 +8,7 @@ const UserSettings = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // Added error state
+  const [deleting, setDeleting] = useState(false); // Added deleting state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,27 +45,36 @@ const UserSettings = () => {
       setError('No token found. Please log in.');
       return;
     }
-
+  
     const loggedInUserId = parseJwt(token)._id; // Assuming the JWT has an _id field for the logged-in user
-
+  
     // Check if the user to be deleted is the logged-in user (owner of the token)
     if (userId === loggedInUserId) {
       setError('You cannot delete yourself.');
       return;
     }
-
+  
+    setDeleting(true); // Set deleting to true to show loading state
+  
     try {
       const result = await deleteUser(userId, token);
-      if (result.success) {
+      // Adjust condition based on response's `msg` field
+      if (result.msg === 'success') {
         console.log('User deleted:', userId);
-        setUsers(users.filter((user) => user._id !== userId));  // Update state after deletion
+        setUsers(users.filter((user) => user._id !== userId)); // Update state after deletion
       } else {
+        console.log('Delete user result:', result); // Log the result for further inspection
         setError('Failed to delete user.');
       }
     } catch (error) {
-      setError('Failed to delete user');
+      console.error('Delete user error:', error); // Log full error details
+      setError(error.response ? error.response.data : 'Failed to delete user');
+    } finally {
+      setDeleting(false); // Reset deleting state after operation is done
     }
   };
+  
+  
 
   if (loading) {
     return <Spinner animation="border" />; // Show loading spinner while fetching data
@@ -92,7 +101,7 @@ const UserSettings = () => {
   );
 };
 
-const UserCard = ({ user, handleDeleteUser }) => {
+const UserCard = ({ user, handleDeleteUser, deleting }) => {
   return (
     <div className="user-settings-container">
       <Card className="user-card">
@@ -118,15 +127,16 @@ const UserCard = ({ user, handleDeleteUser }) => {
               )}
             </ListGroup.Item>
           </ListGroup>
-          {/* Add the delete button to each card */}
-          <Button variant="danger" onClick={() => handleDeleteUser(user._id)}>
-            Delete User
+          {/* Conditionally render the delete button based on deleting state */}
+          <Button variant="danger" onClick={() => handleDeleteUser(user._id)} disabled={deleting}>
+            {deleting ? 'Deleting...' : 'Delete User'}
           </Button>
         </Card.Body>
       </Card>
     </div>
   );
 };
+
 
 // Helper function to decode JWT token
 const parseJwt = (token) => {
